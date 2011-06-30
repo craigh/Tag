@@ -1,7 +1,7 @@
 <h2>{gt text='Tags on this site'}</h2>
 <ul>
 {foreach from=$tags item='tag'}
-    <li><a href='{modurl modname="Tag" type="user" func="view" tag=$tag->getTag()|escape:'url'}'>{$tag->getTag()|safetext}</a></li>
+    <li class="tag_pop_{$tag.weight}"><a href='{modurl modname="Tag" type="user" func="view" tag=$tag.tag|escape:'url'}'>{$tag.tag|safetext}</a> ({gt text="tagged %s time" plural="tagged %s times" count=$tag.freq tag1=$tag.freq})</li>
 {foreachelse}
     <li>{gt text='No tags.'}</li>
 {/foreach}

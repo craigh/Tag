@@ -8,14 +8,14 @@
  */
 use Doctrine\ORM\Mapping as ORM;
 
-//use Gedmo\Mapping\Annotation as Gedmo; // Add a behavous
+//use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
 
 /**
  * Tags entity class.
  *
  * Annotations define the entity mappings to database.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tag_Entity_Repository_TagRepository")
  * @ORM\Table(name="tag_tag")
  */
 class Tag_Entity_Tag extends Zikula_EntityAccess

@@ -37,16 +37,14 @@ class Tag_Controller_User extends Zikula_AbstractController
         $selectedTag = $this->request->getGet()->get('tag', isset($args['tag']) ? $args['tag'] : null);
         
         if (isset($selectedTag)) {
-            $this->view->assign('selectedtag', $selectedTag);
             $result = $this->entityManager->getRepository('Tag_Entity_Object')->getTagged($selectedTag);
-            $this->view->assign('result', $result);
+            $this->view->assign('selectedtag', $selectedTag)
+                       ->assign('result', $result);
         }
         
-        $tags = $this->entityManager
-                ->getRepository('Tag_Entity_Tag')
-                ->findAll();
+        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency();
 
-        return $this->view->assign('tags', $tags)
+        return $this->view->assign('tags', $tagsByPopularity)
                           ->fetch('user/view.tpl');
     }
 }
