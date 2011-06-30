@@ -9,7 +9,7 @@
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-//use Gedmo\Mapping\Annotation as Gedmo; // Add a behavous
+//use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
 
 /**
  * Tagged object entity class.
