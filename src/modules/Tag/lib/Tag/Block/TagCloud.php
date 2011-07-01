@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  *
@@ -8,6 +9,7 @@
 
 class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
 {
+
     /**
      * initialise block
      */
@@ -15,23 +17,23 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
     {
         SecurityUtil::registerPermissionSchema('Tag:tagcloud:', 'Block title::');
     }
-    
+
     /**
      * get information on block
      */
     public function info()
     {
         return array(
-            'text_type'        => 'tagcloud',
-            'module'           => 'Tag',
-            'text_type_long'   => $this->__('Tag cloud display'),
-            'allow_multiple'   => true,
-            'form_content'     => false,
-            'form_refresh'     => false,
-            'show_preview'     => true,
-            'admin_tableless'  => true);
+            'text_type' => 'tagcloud',
+            'module' => 'Tag',
+            'text_type_long' => $this->__('Tag cloud display'),
+            'allow_multiple' => true,
+            'form_content' => false,
+            'form_refresh' => false,
+            'show_preview' => true,
+            'admin_tableless' => true);
     }
-    
+
     /**
      * display block
      */
@@ -44,50 +46,35 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
             return;
         }
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-    
         // Defaults
-        $vars['limit'] = !empty($vars['showcountdown']) ? $vars['showcountdown'] : 10;
-        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency();
-
+        $vars['limit'] = !empty($vars['limit']) ? (int)$vars['limit'] : 10;
+        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency($vars['limit']);
         $this->view->assign('tags', $tagsByPopularity);
-    
         $blockinfo['content'] = $this->view->fetch('blocks/tagcloud.tpl');
-    
         return BlockUtil::themeBlock($blockinfo);
     }
-    
+
     /**
      * modify block settings
      */
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-        // Defaults
-        if (empty($vars['limit'])) {
-            $vars['limit'] = 10;
-        }
-    
+        $vars['limit'] = !empty($vars['limit']) ? (int)$vars['limit'] : 10;
         $this->view->assign('vars', $vars);
-    
         return $this->view->fetch('blocks/tagcloud_modify.tpl');
     }
-    
+
     /**
      * update block settings
      */
     public function update($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-    
-        // alter the corresponding variable
-        $vars['limit'] = FormUtil::getPassedValue('limit', 10, 'POST');
-    
-        // write back the new contents
+        $vars['limit'] = $this->request->getPost()->get('limit', isset($args['limit']) ? $args['limit'] : 10);
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
-    
-        // clear the block cache
         $this->view->clear_cache('blocks/tagcloud.tpl');
-    
         return $blockinfo;
     }
+
 }
