@@ -1,18 +1,23 @@
-#tagcloud {
-
+/* GENERAL TAGLIST STYLING */
+.tagcloud {
+    margin-top: 5px;
 }
-#tagcould ul {
+
+.tagcloud ul,
+#selectedTags {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-#tagcloud ul li {
+.tagcloud ul li,
+#selectedTags li {
     list-style-type: none;
     display: inline;
     margin: 0;
     padding-right: 8px;
 }
 
+/* TAGCLOUD WEIGHTING */
 .tag_pop_20 {
     font-weight: 100;
     font-size: 100%;
@@ -32,4 +37,53 @@
 .tag_pop_100 {
     font-weight: 900;
     font-size: 200%;
+}
+
+/* TAG DISPLAY */
+.activeTag {
+    font-size: 80%;
+    background: #C5E8F1 15px 50% no-repeat;
+    text-align: left;
+    padding: 2px 2px 2px 2px;
+    border: 1px solid #95C9EF;
+    min-height: 1em;
+    -webkit-border-radius: 10px 3px 3px 10px;
+    -moz-border-radius: 10px 3px 3px 10px;
+    border-radius: 10px 3px 3px 10px;
+    color: #444;
+}
+.activeTag a {
+    font-weight: 700;
+}
+.activeTag .taghole {
+    color: #95C9EF;
+    margin-right: 4px;
+}
+
+/* AUTOCOMPLETE STYLES */
+#livetagsearch .autocomplete_tag {
+    position: absolute;
+    /*    width: 25em;*/
+    background-color: white;
+    border: 1px solid #888;
+    margin: 0;
+    padding: 0;
+}
+
+#livetagsearch .autocomplete_tag ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#livetagsearch .autocomplete_tag ul li.selected {
+    background-color: #ffb;
+}
+
+#livetagsearch .autocomplete_tag ul li {
+    list-style-type:none;
+    display:block;
+    cursor: pointer;
+    margin: 0;
+    padding: 3px 0 3px 5px;
 }

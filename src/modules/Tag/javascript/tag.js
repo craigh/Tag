@@ -1,7 +1,14 @@
 function livetagsearch()
 {
-    $('livetagsearch').removeClassName('z-hide');
-
+    if ($('tagsAvailableToAdd')) {
+        // this is wrong :-)
+        var tagsAvailableToAssign = $$('.tag_available');
+        $tagsAvailableToAssign.each(function(tag_available) {
+            $(tag_available).observe('click', tag_add_available);
+        });
+        //observe('click', tag_add_available)
+    }
+    
     var options = Zikula.Ajax.Request.defaultOptions({
         paramName: 'fragment',
         tokens: ',',
@@ -15,5 +22,10 @@ function livetagsearch()
 //            });
 //        }
     });
-    new Ajax.Autocompleter('tag_tags', 'tag_choices', Zikula.Config.baseURL + 'ajax.php?module=tag&func=gettags', options);
+    new Ajax.Autocompleter('tag_adder', 'tag_choices', Zikula.Config.baseURL + 'ajax.php?module=tag&func=gettags', options);
+}
+
+function tag_add_available()
+{
+    alert('clicked!');
 }

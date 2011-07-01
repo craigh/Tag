@@ -55,16 +55,11 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $areaId = $hook->getAreaId();
         
         if (!empty($objectId)) {
-            $localTagArray = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
-            $localTags = array();
-            foreach ($localTagArray as $tagObj) {
-                $localTags[] = $tagObj['tag'];
-            }
-            $tag = array('taglist' => implode(", ", $localTags));
+            $selectedTags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
         } else {
-            $tag = array('taglist' => '');
+            $selectedTags = array();
         }
-        $this->view->assign('tag', $tag);
+        $this->view->assign('selectedTags', $selectedTags);
         
         $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
         $this->view->assign('tagsByPopularity', $tagsByPopularity);
@@ -114,8 +109,7 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
 
         $hookdata = $this->validation->getObject();
         $hookdata = DataUtil::cleanVar($hookdata);
-        
-        $tagArray = $this->tagArrayFromString($hookdata['tags']);
+        $tagArray = $this->cleanTagArray($hookdata['tags']);
         
         if (count($tagArray) > 0) {
             // search for existing object
@@ -230,17 +224,16 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
     }
     
     /**
-     * Concert comma-separated string to clean array
+     * clean up words in array values
      * 
-     * @param string $string
+     * @param array $array
      * 
      * @return array
      */
-    private function tagArrayFromString($string)
+    private function cleanTagArray($array)
     {
         $final = array();
-        $words = explode(",", $string);
-        foreach ($words as $word) {
+        foreach ($array as $word) {
             $word = trim(strip_tags($word));
             if (!empty($word)) {
                 $final[] = $word;
