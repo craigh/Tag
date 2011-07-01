@@ -1,11 +1,21 @@
+{ajaxheader modname='Tag' ui=true}
+{pageaddvarblock}
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        Zikula.UI.Tooltips($$('.tooltips'));
+    });
+</script>
+{/pageaddvarblock}
 <h2>{gt text='Tags on this site'}</h2>
-<ul>
-{foreach from=$tags item='tag'}
-    <li class="tag_pop_{$tag.weight}"><a href='{modurl modname="Tag" type="user" func="view" tag=$tag.tag|escape:'url'}'>{$tag.tag|safetext}</a> ({gt text="tagged %s time" plural="tagged %s times" count=$tag.freq tag1=$tag.freq})</li>
-{foreachelse}
-    <li>{gt text='No tags.'}</li>
-{/foreach}
-</ul>
+<div id='tagcloud'>
+    <ul>
+    {foreach from=$tags item='tag'}
+        <li class="tag_pop_{$tag.weight}"><a href='{modurl modname="Tag" type="user" func="view" tag=$tag.tag|escape:'url'}' title='{gt text="tagged %s time" plural="tagged %s times" count=$tag.freq tag1=$tag.freq}' class='tooltips'>{$tag.tag|safetext}</a></li>
+    {foreachelse}
+        <li>{gt text='No tags.'}</li>
+    {/foreach}
+    </ul>
+</div>
 {if isset($result)}
 <h3>{$selectedtag}</h3>
 <ul>

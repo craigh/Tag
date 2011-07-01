@@ -77,4 +77,31 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
                 break;
         }
     }
+    
+    /**
+     * get an array of tags matching a text fragment
+     * 
+     * @param string $fragment
+     * @param integer $limit
+     * @return array
+     */
+    public function getTagsByFragment($fragment, $limit = -1)
+    {
+        $em = ServiceUtil::getService('doctrine.entitymanager');
+        
+        $rsm = new ORM\Query\ResultSetMapping;
+        $rsm->addEntityResult('Tag_Entity_Tag', 't');
+        $rsm->addFieldResult('t', 'tag', 'tag');
+        $rsm->addFieldResult('t', 'id', 'id');
+
+        $sql = "SELECT t.id, t.tag FROM tag_tag t" .
+               " WHERE t.tag REGEXP '(" . DataUtil::formatForStore($fragment) . ")'" .
+               " ORDER BY t.tag ASC";
+        if ($limit > 0) {
+            $sql .= " LIMIT $limit";
+        }
+        $tags = $em->createNativeQuery($sql, $rsm)
+                   ->getResult();
+        return $tags;
+    }
 }

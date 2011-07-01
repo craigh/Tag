@@ -1,0 +1,35 @@
+#tagcloud {
+
+}
+#tagcould ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#tagcloud ul li {
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+    padding-right: 8px;
+}
+
+.tag_pop_20 {
+    font-weight: 100;
+    font-size: 100%;
+}
+.tag_pop_40 {
+    font-weight: 300;
+    font-size: 125%;
+}
+.tag_pop_60 {
+    font-weight: 500;
+    font-size: 150%;
+}
+.tag_pop_80 {
+    font-weight: 700;
+    font-size: 175%;
+}
+.tag_pop_100 {
+    font-weight: 900;
+    font-size: 200%;
+}
