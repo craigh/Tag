@@ -66,16 +66,9 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         }
         $this->view->assign('tag', $tag);
         
-        $globalTags = $this->entityManager
-                ->getRepository('Tag_Entity_Tag')
-                ->findAll();
-        $globalTagArray = array();
-        foreach ($globalTags as $tag) {
-            $globalTagArray[] = $tag->getTag();
-        }
-        $globalTagList = implode(", ", $globalTagArray);
-        $this->view->assign('globaltaglist', $globalTagList);
-        
+        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
+        $this->view->assign('tagsByPopularity', $tagsByPopularity);
+
         // add this response to the event stack
         $area = 'provider.tag.ui_hooks.service';
         $hook->setResponse(new Zikula_Response_DisplayHook($area, $this->view, 'hooks/edit.tpl'));

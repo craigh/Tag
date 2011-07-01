@@ -15,6 +15,15 @@
         {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}</span>
         <em class="z-sub z-formnote">{gt text='comma separated (e.g. zikula, computer, code)'}</em>
         <div id="tag_choices" class="autocomplete_tag"></div>
-        <div class="z-informationmsg z-formnote">{gt text='Existing tags'}: {$globaltaglist}</div>
+    </div>
+    <div id='tagcloud' class="z-formnote">
+        {gt text='Popular tags'}:
+        <ul>
+        {foreach from=$tagsByPopularity item='tag'}
+            <li class="tag_pop_{$tag.weight}"><a href='javascript:void()' title='{gt text="Add tag %s" tag1=$tag.tag|safetext}' class='tooltips'>{$tag.tag|safetext}</a></li>
+        {foreachelse}
+            <li>{gt text='No tags.'}</li>
+        {/foreach}
+        </ul>
     </div>
 </fieldset>

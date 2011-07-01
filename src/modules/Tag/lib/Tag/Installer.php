@@ -24,9 +24,12 @@ class Tag_Installer extends Zikula_AbstractInstaller
             DoctrineHelper::createSchema($this->entityManager, array('Tag_Entity_Tag', 'Tag_Entity_Object'));
         } catch (Exception $e) {
             LogUtil::registerError($e->getMessage());
-//            var_dump($e); die;
             return false;
         }
+        
+        $this->setVars(array(
+            'poptagsoneditform' => 10,
+        ));
 
         $this->defaultdata();
         

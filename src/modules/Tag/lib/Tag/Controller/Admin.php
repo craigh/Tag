@@ -62,7 +62,33 @@ class Tag_Controller_Admin extends Zikula_AbstractController
      */
     public function modifyconfig($args)
     {
-        // temporary
-        $this->redirect(ModUtil::url('Tag', 'admin', 'view', $args));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+
+        return $this->view->fetch('admin/modifyconfig.tpl');
     }
+
+    /**
+     * @desc sets module variables as requested by admin
+     * @return      status/error ->back to modify config page
+     */
+    public function updateconfig()
+    {
+        $this->checkCsrfToken();
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+
+        $modvars = array(
+            'poptagsoneditform' => $this->request->getPost()->get('poptagsoneditform', 10),
+        );
+
+        // set the new variables
+        $this->setVars($modvars);
+
+        // clear the cache
+        $this->view->clear_cache();
+
+        LogUtil::registerStatus($this->__('Done! Updated the Tag configuration.'));
+        return $this->redirect(ModUtil::url('Tag', 'admin', 'view', array()));
+    }
+
 }
