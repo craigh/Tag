@@ -20,7 +20,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
      * @param integer $limit
      * @return array
      */
-    public function getTagsByFrequency($limit = 10)
+    public function getTagsByFrequency($limit = 10, $fillLimit = true)
     {
         $em = ServiceUtil::getService('doctrine.entitymanager');
         
@@ -40,11 +40,29 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $tags = $em->createNativeQuery($sql, $rsm)
                    ->getResult();
         $result = array();
-        $weightUnit = $tags[0]['freq'] / 5;
-        foreach ($tags as $tag) {
-            $result[] = array('freq' => $tag['freq'],
-                'tag' => $tag[0]->getTag(),
-                'weight' => $this->getWeight($weightUnit, $tag['freq']));
+        if (count($tags) > 0) {
+            $weightUnit = $tags[0]['freq'] / 5;
+            foreach ($tags as $tag) {
+                $result[$tag[0]->getTag()] = array('freq' => $tag['freq'],
+                    'tag' => $tag[0]->getTag(),
+                    'weight' => $this->getWeight($weightUnit, $tag['freq']));
+            }
+        }
+        // add unused tags to fill out limit
+        if ($fillLimit) {
+            $tagsNeeded = $limit - count($result);
+            $unusedTags = $this->getTagsByRandom();
+            foreach ($unusedTags as $tag) {
+                if ($tagsNeeded <= 0) {
+                    break;
+                }
+                if (!isset($result[$tag->getTag()])) {
+                    $result[$tag->getTag()] = array('freq' => 0,
+                        'tag' => $tag->getTag(),
+                        'weight' => '20');
+                    $tagsNeeded--;
+                }
+            }
         }
         return $result;
     }
@@ -79,14 +97,17 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
     }
     
     /**
-     * get an array of tags matching a text fragment
+     * get an array of tags matching text fragment(s)
      * 
-     * @param string $fragment
+     * @param array $fragments
      * @param integer $limit
      * @return array
      */
-    public function getTagsByFragment($fragment, $limit = -1)
+    public function getTagsByFragments(array $fragments, $limit = -1)
     {
+        if (empty($fragments)) {
+            return array();
+        }
         $em = ServiceUtil::getService('doctrine.entitymanager');
         
         $rsm = new ORM\Query\ResultSetMapping;
@@ -94,14 +115,37 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm->addFieldResult('t', 'tag', 'tag');
         $rsm->addFieldResult('t', 'id', 'id');
 
-        $sql = "SELECT t.id, t.tag FROM tag_tag t" .
-               " WHERE t.tag REGEXP '(" . DataUtil::formatForStore($fragment) . ")'" .
-               " ORDER BY t.tag ASC";
+        $sql = "SELECT t.id, t.tag FROM tag_tag t WHERE ";
+        $subSql = array();
+        foreach ($fragments as $fragment) {
+            $subSql[] = "t.tag REGEXP '(" . DataUtil::formatForStore($fragment) . ")'";
+        }
+        $sql .= implode(" OR ", $subSql);
+        $sql .= " ORDER BY t.tag ASC";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
         $tags = $em->createNativeQuery($sql, $rsm)
                    ->getResult();
         return $tags;
+    }
+    
+    /**
+     * get an array of tags in random order
+     * 
+     * @param integer $limit
+     * @return  Object Zikula_EntityAccess
+     */
+    public function getTagsByRandom($limit = 0)
+    {
+        $dql = "SELECT t from Tag_Entity_Tag t";
+        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $result = $em->createQuery($dql)
+                     ->getResult();
+        shuffle($result);
+        if ($limit > 0) {
+            $result = array_slice($result, 0, $limit);
+        }
+        return $result;
     }
 }

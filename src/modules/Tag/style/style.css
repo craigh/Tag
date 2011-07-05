@@ -87,3 +87,8 @@
     margin: 0;
     padding: 3px 0 3px 5px;
 }
+
+/* OTHER GENERAL STYLES */
+#tagsAvailableToAdd {
+    margin-top: 5px;
+}
