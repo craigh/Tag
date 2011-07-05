@@ -1,3 +1,4 @@
+{pageaddvar name='stylesheet' value='modules/Tag/style/style.css'}
 <div class='tagcloud'>
     <ul>
     {foreach from=$tags item='tag'}
