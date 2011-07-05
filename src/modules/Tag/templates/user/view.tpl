@@ -10,7 +10,7 @@
 <div class='tagcloud'>
     <ul>
     {foreach from=$tags item='tag'}
-        <li class="tag_pop_{$tag.weight}"><a href='{modurl modname="Tag" type="user" func="view" tag=$tag.tag|escape:'url'}' title='{gt text="tagged %s time" plural="tagged %s times" count=$tag.freq tag1=$tag.freq}' class='tooltips'>{$tag.tag|safetext}</a></li>
+        <li class="tag_pop_{$tag.weight}"><a href='{modurl modname="Tag" type="user" func="view" tag=$tag.tag|safetext}' title='{gt text="tagged %s time" plural="tagged %s times" count=$tag.freq tag1=$tag.freq}' class='tooltips'>{$tag.tag|safetext}</a></li>
     {foreachelse}
         <li>{gt text='No tags.'}</li>
     {/foreach}

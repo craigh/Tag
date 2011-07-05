@@ -7,7 +7,7 @@
  */
 
 /**
- * Class to control Admin interface
+ * Class to control Admin Api
  */
 class Tag_Api_Admin extends Zikula_AbstractApi
 {
