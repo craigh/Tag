@@ -82,10 +82,9 @@ function tagListToCleanArray(list)
 {
     var tagArray = list.split(",");
     var resultArray = [];
-    tagArray.each(function(s) {
-        var word = s.stripTags();
-        word = word.stripScripts();
-        // trim?
+    tagArray.each(function(word) {
+        // remove tags, scripts and trailing/leading spaces
+        word = word.stripTags().stripScripts().strip();
         if (word.empty() != null) {
             resultArray.push(word);
         }
