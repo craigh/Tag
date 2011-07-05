@@ -120,7 +120,6 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
                     'objectId' => $objectId,
                     'areaId' => $areaId));
             if (isset($hookObject)) {
-                // if exists, remove it because apparently you can't easily update it
                 $this->entityManager->remove($hookObject);
             }
             $hookObject = new Tag_Entity_Object();
