@@ -9,22 +9,14 @@ function initTagUI()
     if ($('addNewTag')) {
         $('addNewTag').observe('click', tag_add_new);
     }
+    if ($('tag_adder')) {
+        $('tag_adder').up('form').observe('submit', tag_add_new);
+    }
     
     var options = Zikula.Ajax.Request.defaultOptions({
         paramName: 'fragment',
         tokens: ',',
-        minChars: 2,
-        afterUpdateElement: function(data){
-                var thing = $($(data).value).value;
-                alert(thing);
-            }
-//            $('modifyuser').observe('click', function() {
-//                window.location.href = Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&userid=" + $($(data).value).value;
-//            });
-//            $('deleteuser').observe('click', function() {
-//                window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=deleteusers&userid=" + $($(data).value).value;
-//            });
-//        }
+        minChars: 3
     });
     new Ajax.Autocompleter('tag_adder', 'tag_choices', Zikula.Config.baseURL + 'ajax.php?module=tag&func=gettags', options);
 }
@@ -77,12 +69,13 @@ function _tag_remove(tagname)
 function tag_add_new(event)
 {
     var taglist = $('tag_adder').value;
-    var tagArray = tagListToCleanArray(taglist);
-    tagArray.each(function(word) {
-        _tag_add(word);
-    })
-    $('tag_adder').value = '';
-//    alert(taglist);
+    if (taglist) {
+        var tagArray = tagListToCleanArray(taglist);
+        tagArray.each(function(word) {
+            _tag_add(word);
+        });
+        $('tag_adder').value = '';
+    }
 }
 
 function tagListToCleanArray(list)
