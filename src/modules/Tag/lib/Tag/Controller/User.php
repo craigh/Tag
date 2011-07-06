@@ -52,6 +52,9 @@ class Tag_Controller_User extends Zikula_AbstractController
                     }
                 }
                 $objectMeta = new $classname($item['objectId'], $item['areaId'], $item['module'], $item['url']);
+                if (!($objectMeta instanceof Tag_AbstractTaggedObjectMeta)) {
+                    $objectMeta = new Tag_TaggedObjectMeta_Generic($item['objectId'], $item['areaId'], $item['module'], $item['url']);
+                }
                 $result[$key]['link'] = $objectMeta->getPresentationLink();
             }
             $this->view->assign('selectedtag', $selectedTag)
