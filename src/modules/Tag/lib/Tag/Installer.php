@@ -37,6 +37,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
         
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
         EventUtil::registerPersistentModuleHandler('Tag', 'installer.module.uninstalled', array('Tag_HookHandlers', 'moduleDelete'));
+        EventUtil::registerPersistentModuleHandler('Tag', 'module.content.gettypes', array('Tag_Handlers', 'getTypes'));
 
         // Initialisation successful
         return true;
