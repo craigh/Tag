@@ -22,7 +22,7 @@
         <ul id="selectedTags">
         {if count($selectedTags) > 0}
         {foreach from=$selectedTags item='sTag'}
-            <li class='activeTag' id='li_{$sTag.tag|safetext}'><span class='taghole'>&bull;</span>{$sTag.tag|safetext} <a href='javascript:void(0);' title='{gt text='remove tag'}' id='tagRemove_{$sTag.tag|safetext}' class='tagRemover tooltips'>x</a></li>
+            <li class='activeTag' id='li_{$sTag.tag|safetext}'><span class='taghole'>&bull;</span>{$sTag.tag|safetext} <a href='javascript:void(0);' title='{gt text='remove tag'}' id='tagRemove_{$sTag.tag|safetext}' class='tagRemover'>x</a></li>
         {/foreach}
         {/if}
         </ul>

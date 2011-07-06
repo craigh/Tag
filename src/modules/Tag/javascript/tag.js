@@ -17,10 +17,22 @@ function initTagUI()
     if ($('addNewTag')) {
         $('addNewTag').observe('click', tag_add_new);
     }
+    // observe form for submit before tags added
     if ($('tag_adder')) {
         $('tag_adder').up('form').observe('submit', tag_add_new);
     }
-    
+    // add tooltips to tag removal links (special case)
+    $$('li.activeTag a').each(function(link) {
+        link.tooltip = new Zikula.UI.Tooltip(link);
+    });
+    // disable form submission for tag_adder field
+    $('tag_adder').observe('keypress', function(event){
+       if (event.keyCode == Event.KEY_RETURN) {
+           event.stop();
+           tag_add_new();
+       }
+    });
+    // autocompleter options
     var options = Zikula.Ajax.Request.defaultOptions({
         paramName: 'fragment',
         tokens: ',',
@@ -41,12 +53,11 @@ function _tag_add(tagname)
 {
     if ($('li_' + tagname) == undefined) {
         // add visible tag
-        $('selectedTags').insert("<li class='activeTag' id='li_" + tagname + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + tagname + "' class='tagRemover tooltips'>x</a></li>\n");
+        $('selectedTags').insert("<li class='activeTag' id='li_" + tagname + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + tagname + "' class='tagRemover'>x</a></li>\n");
         // engage tooltip observer
-        var defaultTooltip = new Zikula.UI.Tooltip($('tagRemove_' + tagname));
+        $('tagRemove_' + tagname).tooltip = new Zikula.UI.Tooltip($('tagRemove_' + tagname));
         // engage removal observer
         $('tagRemove_' + tagname).observe('click', tag_remove);
-        
         // add hidden form element
         $('activeTagContainer').insert("<input type='hidden' name='tag[tags][]' id='tagActive_" + tagname + "' value='" + tagname + "' />\n");
         // form.insert(new Element('input', {name: 'q', value: 'a', type: 'hidden'}));
@@ -67,7 +78,8 @@ function tag_remove(event)
 function _tag_remove(tagname)
 {    
     // remove visible tooltip
-    // ??
+    $('tagRemove_' + tagname).tooltip.close();
+    $('tagRemove_' + tagname).tooltip.destroy();
     // remove visible tag
     $('li_' + tagname).remove();
     // remove hidden form element
@@ -93,7 +105,7 @@ function tagListToCleanArray(list)
     tagArray.each(function(word) {
         // remove tags, scripts and trailing/leading spaces
         word = word.stripTags().stripScripts().strip();
-        if (word.empty() != null) {
+        if (!word.empty()) {
             resultArray.push(word);
         }
     });
