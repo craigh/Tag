@@ -16,7 +16,7 @@
         <div class="z-buttons z-formbuttons">
             {formbutton class='z-bt-ok' commandName='create' __text='Save'}
             {formbutton class='z-bt-cancel' commandName='cancel' __text='Cancel'}
-            {if isset($id)}{formbutton class="z-bt-delete z-btred" commandName="delete" __text="Delete" __confirmMessage='Delete'}{/if}
+            {if isset($id)}{formbutton class="z-bt-delete z-btred" commandName="delete" __text="Delete" __confirmMessage='Are you sure you want to delete this item'}{/if}
         </div>
 
     </fieldset>
