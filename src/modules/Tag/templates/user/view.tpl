@@ -20,7 +20,9 @@
 <h3>{$selectedtag}</h3>
 <ul>
 {foreach from=$result item='r'}
-<li><a href='{$r.url}'>{gt text="%s item (id# %s)" tag1=$r.module tag2=$r.objectId}</a></li>
+    {if isset($r.link)}
+    <li>{$r.link}</li>
+    {/if}
 {/foreach}
 </ul>
 {/if}

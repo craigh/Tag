@@ -40,6 +40,20 @@ class Tag_Controller_User extends Zikula_AbstractController
         
         if (isset($selectedTag)) {
             $result = $this->entityManager->getRepository('Tag_Entity_Object')->getTagged($selectedTag);
+            foreach ($result as $key => $item) {
+                $possibleClassNames = array(
+                    "$item[module]_TaggedObjectMeta_$item[module]",
+                    "Tag_TaggedObjectMeta_$item[module]",
+                    "Tag_TaggedObjectMeta_Generic",
+                );
+                foreach ($possibleClassNames as $classname) {
+                    if (class_exists($classname)) {
+                        break;
+                    }
+                }
+                $objectMeta = new $classname($item['objectId'], $item['areaId'], $item['module'], $item['url']);
+                $result[$key]['link'] = $objectMeta->getPresentationLink();
+            }
             $this->view->assign('selectedtag', $selectedTag)
                        ->assign('result', $result);
         }

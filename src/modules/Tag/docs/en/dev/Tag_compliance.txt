@@ -1,0 +1,40 @@
+Compliance
+==========
+
+In order for a module to be fully compliant* with Tag, it must provide a class
+to define its object's Meta information. This is needed because Hook data is not
+sufficient to supply additional needed information such as object title, date
+and author.
+
+*If a module is not fully compliant, a link to the object will still be provided
+but it is quite generic and looks something like this:
+
+`ModuleName item (id#XXXX)`
+
+
+Requirement
+===========
+
+Add a class to your module called `ModuleName_TaggedObjectMeta_ModuleName`
+
+This class must extend `Tag_AbstractTaggedObjectMeta`
+
+Within this class, the interface requires the definition of three methods:
+
+    setObjectTitle($title);
+    setObjectDate($date);
+    setObjectAuthor($author);
+
+Use these methods to set the associated class properties (title, date, author)
+and define the full link used when displaying content Object links.
+
+You must define a constructor and it **must** call it's parent constructor as
+well as calling the three methods defining title, date and author.
+
+Date and author items may be defined as empty strings, but the title is required.
+
+Optional
+========
+
+If you wish, you may change how the link is displayed by overriding the 
+`getPresentationLink()` method.
