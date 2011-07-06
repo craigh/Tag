@@ -149,4 +149,26 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         }
         return $result;
     }
+    
+    public function getTagsWithCount($limit = 0, $offset = 0, $orderBy = 't.tag', $sortDir = 'ASC')
+    {
+        $em = ServiceUtil::getService('doctrine.entitymanager');
+        
+        $rsm = new ORM\Query\ResultSetMapping;
+        $rsm->addEntityResult('Tag_Entity_Tag', 't');
+        $rsm->addFieldResult('t', 'tag', 'tag');
+        $rsm->addFieldResult('t', 'id', 'id');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $sql = "SELECT t.id, t.tag, count(j.tag_entity_tag_id) cnt FROM tag_tag t" .
+               " LEFT JOIN tag_entity_object_tag_entity_tag j" .
+               " ON t.id = j.tag_entity_tag_id GROUP BY t.id" .
+               " ORDER BY $orderBy $sortDir";
+        if ($limit > 0) {
+            $sql .= " LIMIT $limit";
+        }
+        $tags = $em->createNativeQuery($sql, $rsm)
+                   ->getResult();
+        return $tags;
+    }
 }

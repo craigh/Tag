@@ -38,9 +38,44 @@ class Tag_Controller_Admin extends Zikula_AbstractController
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
 
+        // initialize sort array - used to display sort classes and urls
+        $sort = array();
+        $fields = array('id', 'tag', 'cnt'); // possible sort fields
+        foreach ($fields as $field) {
+            $sort['class'][$field] = 'z-order-unsorted'; // default values
+        }
+
+        // Get parameters from whatever input we need.
+//        $startnum = (int)$this->request->getGet()->get('startnum', $this->request->getPost()->get('startnum', isset($args['startnum']) ? $args['startnum'] : null));
+        $orderby = $this->request->getGet()->get('orderby', $this->request->getPost()->get('orderby', isset($args['orderby']) ? $args['orderby'] : 'title'));
+        $original_sdir = $this->request->getGet()->get('sdir', $this->request->getPost()->get('sdir', isset($args['sdir']) ? $args['sdir'] : 0));
+
+//        $this->view->assign('startnum', $startnum);
+        $this->view->assign('orderby', $orderby);
+        $this->view->assign('sdir', $original_sdir);
+
+        $sdir = $original_sdir ? 0 : 1; //if true change to false, if false change to true
+        // change class for selected 'orderby' field to asc/desc
+        if ($sdir == 0) {
+            $sort['class'][$orderby] = 'z-order-desc';
+            $orderdir = 'DESC';
+        }
+        if ($sdir == 1) {
+            $sort['class'][$orderby] = 'z-order-asc';
+            $orderdir = 'ASC';
+        }
+        // complete initialization of sort array, adding urls
+        foreach ($fields as $field) {
+            $sort['url'][$field] = ModUtil::url('Tag', 'admin', 'view', array(
+                        'orderby' => $field,
+                        'sdir' => $sdir));
+        }
+        $this->view->assign('sort', $sort);
+        
+        $fieldmap = array('tag' => 't.tag', 'id' => 't.id', 'cnt' => 'cnt');
         $tags = $this->entityManager
                 ->getRepository('Tag_Entity_Tag')
-                ->findAll();
+                ->getTagsWithCount(0, 0, $fieldmap[$orderby], $orderdir);
 
         return $this->view->assign('tags', $tags)
                           ->fetch('admin/view.tpl');
