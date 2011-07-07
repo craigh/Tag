@@ -31,6 +31,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
         
         $this->setVars(array(
             'poptagsoneditform' => 10,
+            'crpTagMigrateComplete' => false,
         ));
 
         $this->defaultdata();

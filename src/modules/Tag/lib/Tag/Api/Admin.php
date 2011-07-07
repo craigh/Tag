@@ -45,6 +45,13 @@ class Tag_Api_Admin extends Zikula_AbstractApi
                 'class' => 'z-icon-es-new');
         }
 
+        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
+            $links[] = array(
+                'url' => ModUtil::url('Tag', 'admin', 'migrateCrpTag'),
+                'text' => $this->__('Migrate crpTag'),
+                'class' => 'z-icon-es-regenerate');
+        }
+
         return $links;
     }
 
