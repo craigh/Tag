@@ -62,9 +62,13 @@ class Tag_Entity_Object extends Zikula_EntityAccess
      */
     private $url;
 
-    public function __construct()
+    public function __construct($module, $objectId, $areaId, $objUrl)
     {
         $this->tags = new ArrayCollection();
+        $this->setModule($module);
+        $this->setObjectId($objectId);
+        $this->setAreaId($areaId);
+        $this->setUrl($objUrl);
     }
 
     public function getId()
