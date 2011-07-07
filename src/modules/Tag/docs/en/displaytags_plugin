@@ -1,0 +1,15 @@
+displaytags template plugin
+===========================
+
+Tag provides a template plugin that you can use in your template to display
+the tags for your content item if you don't wish to (or cannot) rely on the
+display hooks. The plugin is available globally.
+
+Call the plugin in your template like so:
+
+{displaytags modname='News' objectid=$info.sid areaname='subscriber.news.ui_hooks.articles'}
+
+modname is the module name
+objectid is the id of the object
+areaname is the **subscriber** hook areaname for **your** module.
+See your module's Version.php and use the **Bundle** areaname for the ui_hooks bundle.
