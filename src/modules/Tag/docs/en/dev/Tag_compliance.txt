@@ -11,9 +11,12 @@ but it is quite generic and looks something like this:
 
 `ModuleName item (id#XXXX)`
 
+Non-compliant modules will display tagged objects **regardless** of permission
+and visibility checks within the target module!
 
-Requirement
-===========
+
+Requirements
+============
 
 Add a class to your module called `ModuleName_TaggedObjectMeta_ModuleName`
 
@@ -33,8 +36,26 @@ well as calling the three methods defining title, date and author.
 
 Date and author items may be defined as empty strings, but the title is required.
 
+You must do your own permission and visibility checks within your plugin.
+Tag will return all tagged objects regardless or these checks. If the item
+should not be displayed due to checks, simply do not set the title property and
+it will not be displayed.
+
+
 Optional
 ========
 
 If you wish, you may change how the link is displayed by overriding the 
 `getPresentationLink()` method.
+
+
+Examples
+========
+
+Plugins have been implemented in the following modules and may serve as an
+example to you in your own development:
+
+  - News
+  - Pages
+  - Content
+  - PostCalendar
