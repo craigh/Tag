@@ -12,3 +12,6 @@ drag the Tag hook ('Content tagging service') onto the 'ui_hooks' content area
 
 After you have hooked the modules together, you may tag new items or edit old
 items to tag them from the content-providing module's create/edit function.
+
+On installation, Tag creates three sample tags for your use ('Zikula',
+'computer', and 'open source'). These can be safely deleted if you wish.
