@@ -1,4 +1,7 @@
 {ajaxheader modname='Tag' ui=true}
+{if isset($selectedtag)}
+{pageaddvar name='title' value=$modvars.ZConfig.sitename|cat:' :: '|cat:$selectedtag}
+{/if}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
