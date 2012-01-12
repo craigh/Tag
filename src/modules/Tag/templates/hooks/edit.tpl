@@ -12,9 +12,11 @@
     <legend>{gt text="Tags"}</legend>
     <div id="livetagsearch" class="z-formrow">
         <label>{gt text='Add tags'}</label>
-        <span><input type="text" name="tag_adder" id="tag_adder" value="" />
-        <span class="z-buttons">{button type='button' src="button_ok.png" set="icons/extrasmall" id='addNewTag' class='z-bt-small' __alt="Add" __title="Add" __text="Add"}</span>
-        {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}</span>
+        <div>
+            <input type="text" name="tag_adder" id="tag_adder" value="" />
+            {button type='button' src="button_ok.png" set="icons/extrasmall" id='addNewTag' class='z-button z-bt-small' __alt="Add" __title="Add" __text="Add"}
+            {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}
+        </div>
         <em class="z-sub z-formnote">{gt text='comma separated (e.g. zikula, computer, code)'}</em>
         <div id="tag_choices" class="autocomplete_tag"></div>
     </div>
