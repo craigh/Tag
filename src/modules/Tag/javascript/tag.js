@@ -43,27 +43,29 @@ function initTagUI()
 
 function tag_add_available(event)
 {
-    var id = event.element().identify();
-    var tagnameparts = id.split("_");
-    var tagname = tagnameparts.pop();
+    // get tagname from element content
+    var tagname = event.element().innerHTML;
     _tag_add(tagname);
 }
 
 function _tag_add(tagname)
 {
-    if ($('li_' + tagname) == undefined) {
+    // tagname may contain spaces, remove spaces in tag for use in ids
+    var validtagname = tagname.gsub(" ","");
+    
+    if ($('li_' + validtagname) == undefined) {
         // add visible tag
-        $('selectedTags').insert("<li class='activeTag' id='li_" + tagname + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + tagname + "' class='tagRemover'>x</a></li>\n");
+        $('selectedTags').insert("<li class='activeTag' id='li_" + validtagname + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + validtagname + "' class='tagRemover'>x</a></li>\n");
         // engage tooltip observer
-        $('tagRemove_' + tagname).tooltip = new Zikula.UI.Tooltip($('tagRemove_' + tagname));
+        $('tagRemove_' + validtagname).tooltip = new Zikula.UI.Tooltip($('tagRemove_' + validtagname));
         // engage removal observer
-        $('tagRemove_' + tagname).observe('click', tag_remove);
+        $('tagRemove_' + validtagname).observe('click', tag_remove);
         // add hidden form element
-        $('activeTagContainer').insert("<input type='hidden' name='tag[tags][]' id='tagActive_" + tagname + "' value='" + tagname + "' />\n");
+        $('activeTagContainer').insert("<input type='hidden' name='tag[tags][]' id='tagActive_" + validtagname + "' value='" + tagname + "' />\n");
         // form.insert(new Element('input', {name: 'q', value: 'a', type: 'hidden'}));
 
     } else {
-        new Effect.Highlight('li_' + tagname, { startcolor: '#99ff66', endcolor: '#C5E8F1' });
+        new Effect.Highlight('li_' + validtagname, { startcolor: '#99ff66', endcolor: '#C5E8F1' });
     }
 }
 
