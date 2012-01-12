@@ -27,7 +27,7 @@
     <li>{$r.link}</li>
     {/if}
 {foreachelse}
-    <li>{gt text='Not used'}</li>
+    <li>{gt text='No items tagged'}</li>
 {/foreach}
 </ul>
 {/if}
