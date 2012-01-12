@@ -19,13 +19,15 @@
     {/foreach}
     </ul>
 </div>
-{if isset($result)}
+{if isset($selectedtag)}
 <h3>{$selectedtag}</h3>
 <ul>
 {foreach from=$result item='r'}
     {if isset($r.link)}
     <li>{$r.link}</li>
     {/if}
+{foreachelse}
+    <li>{gt text='Not used'}</li>
 {/foreach}
 </ul>
 {/if}
