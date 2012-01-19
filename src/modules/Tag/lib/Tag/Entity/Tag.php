@@ -8,8 +8,7 @@
  * information regarding copyright and licensing.
  */
 use Doctrine\ORM\Mapping as ORM;
-
-//use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
+use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
 
 /**
  * Tags entity class.
@@ -34,8 +33,16 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * tag field (the 'word')
      *
      * @ORM\Column(length=36)
+     * @gedmo:Sluggable(slugField="slug")
      */
     private $tag;
+    /**
+     * slug
+     * 
+     * @ORM\Column(name="slug", type="string", length=128, unique=true)
+     * @gedmo:Slug
+     */
+    private $slug;
 
     public function setTag($tag)
     {
@@ -50,6 +57,11 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
 }
