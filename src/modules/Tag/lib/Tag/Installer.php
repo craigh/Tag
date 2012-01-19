@@ -58,7 +58,15 @@ class Tag_Installer extends Zikula_AbstractInstaller
     {
         switch ($oldversion)
         {
-            case 1.0:
+            case '1.0.0':
+                // update the table
+                try {
+                    DoctrineHelper::updateSchema($this->entityManager, array('Tag_Entity_Tag'));
+                } catch (Exception $e) {
+                    LogUtil::registerError($e->getMessage());
+                    return false;
+                }
+            case '1.0.1':
                 // future upgrades
         }
 
