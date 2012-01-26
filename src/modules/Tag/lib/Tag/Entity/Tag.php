@@ -33,14 +33,14 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * tag field (the 'word')
      *
      * @ORM\Column(length=36)
-     * @gedmo:Sluggable(slugField="slug")
+     * @Gedmo\Sluggable(slugField="slug")
      */
     private $tag;
     /**
      * slug
      * 
      * @ORM\Column(name="slug", type="string", length=128, unique=true)
-     * @gedmo:Slug
+     * @Gedmo\Slug
      */
     private $slug;
 
