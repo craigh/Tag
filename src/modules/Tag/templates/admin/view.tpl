@@ -18,7 +18,8 @@
     <thead>
         <tr>
             <td><a class='{$sort.class.id}' href='{$sort.url.id|safetext}'>{gt text='ID'}</a></td>
-            <td><a class='{$sort.class.tag}' href='{$sort.url.tag|safetext}'>{gt text='Tag'}</a></td>
+            <td><a class='{$sort.class.tag}' href='{$sort.url.tag|safetext}'>{gt text='Text Tag'}</a></td>
+            <td>{gt text='Link Tag'}</td>
             <td><a class='{$sort.class.cnt}' href='{$sort.url.cnt|safetext}'>{gt text='Items tagged'}</a></td>
             <td>{gt text='Options'}</td>
         </tr>
@@ -28,6 +29,7 @@
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>{$tag.0->getId()|safetext}</td>
                 <td>{$tag.0->getTag()|safetext}</td>
+                <td>{$tag.0->getSlug()|safetext}</td>
                 <td>{$tag.cnt|safetext}</td>
                 <td>
                     <a href="{modurl modname="Tag" type="user" func="view" tag=$tag.0->getTag()}">{img modname='core' set='icons/extrasmall' src='14_layer_visible.png' __title='View' __alt='View' class='tooltips'}</a>

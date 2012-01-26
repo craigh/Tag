@@ -158,9 +158,10 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
         $rsm->addFieldResult('t', 'id', 'id');
+        $rsm->addFieldResult('t', 'slug', 'slug');
         $rsm->addScalarResult('cnt', 'cnt');
 
-        $sql = "SELECT t.id, t.tag, count(j.tag_entity_tag_id) cnt FROM tag_tag t" .
+        $sql = "SELECT t.id, t.tag, t.slug, count(j.tag_entity_tag_id) cnt FROM tag_tag t" .
                " LEFT JOIN tag_entity_object_tag_entity_tag j" .
                " ON t.id = j.tag_entity_tag_id GROUP BY t.id" .
                " ORDER BY $orderBy $sortDir";
