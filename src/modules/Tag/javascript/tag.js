@@ -12,7 +12,7 @@ function initTagUI()
         $$('.tag_available').invoke('observe', 'click', tag_add_available);
     }
     if ($('selectedTags')) {
-        $$('.tagRemover').invoke('observe', 'click', tag_remove)
+        $$('.tagRemover').invoke('observe', 'click', tag_remove);
     }
     if ($('addNewTag')) {
         $('addNewTag').observe('click', tag_add_new);
