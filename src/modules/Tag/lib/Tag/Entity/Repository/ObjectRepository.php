@@ -38,7 +38,7 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
     }
     
     /**
-     * get all objects tagged as specified
+     * get all objects tagged as specified from provided slug
      * 
      * @param string $tag
      * @return Object Zikula_EntityAccess
@@ -46,7 +46,7 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
     public function getTagged($tag)
     {
         $dql = "SELECT o FROM Tag_Entity_Object o JOIN o.tags t" .
-               " WHERE t.tag = ?1 ORDER BY o.module ASC, o.objectId DESC";
+               " WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC";
         
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $query = $em->createQuery($dql);

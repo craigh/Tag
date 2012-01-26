@@ -57,7 +57,8 @@ class Tag_Controller_User extends Zikula_AbstractController
                 }
                 $result[$key]['link'] = $objectMeta->getPresentationLink();
             }
-            $this->view->assign('selectedtag', $selectedTag)
+            $temp = $this->entityManager->getRepository('Tag_Entity_Tag')->findBy(array('slug' => $selectedTag));
+            $this->view->assign('selectedtag', $this->entityManager->getRepository('Tag_Entity_Tag')->findBy(array('slug' => $selectedTag)))
                        ->assign('result', $result);
         }
         

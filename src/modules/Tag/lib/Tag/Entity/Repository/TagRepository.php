@@ -28,10 +28,11 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
+        $rsm->addFieldResult('t', 'slug', 'slug');
         $rsm->addFieldResult('t', 'id', 'id');
         $rsm->addScalarResult('freq', 'freq');
 
-        $sql = "SELECT t.id, t.tag, count(j.tag_entity_tag_id) freq" .
+        $sql = "SELECT t.id, t.tag, t.slug, count(j.tag_entity_tag_id) freq" .
                " FROM tag_entity_object_tag_entity_tag j" .
                " LEFT JOIN tag_tag t ON j.tag_entity_tag_id = t.id" .
                " GROUP BY j.tag_entity_tag_id ORDER BY freq DESC";
@@ -46,6 +47,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
             foreach ($tags as $tag) {
                 $result[$tag[0]->getTag()] = array('freq' => $tag['freq'],
                     'tag' => $tag[0]->getTag(),
+                    'slug' => $tag[0]->getSlug(),
                     'weight' => $this->getWeight($weightUnit, $tag['freq']));
             }
         }
@@ -60,6 +62,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
                 if (!isset($result[$tag->getTag()])) {
                     $result[$tag->getTag()] = array('freq' => 0,
                         'tag' => $tag->getTag(),
+                        'slug' => $tag->getSlug(),
                         'weight' => '20');
                     $tagsNeeded--;
                 }
@@ -114,9 +117,10 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
+        $rsm->addFieldResult('t', 'slug', 'slug');
         $rsm->addFieldResult('t', 'id', 'id');
 
-        $sql = "SELECT t.id, t.tag FROM tag_tag t WHERE ";
+        $sql = "SELECT t.id, t.tag, t.slug FROM tag_tag t WHERE ";
         $subSql = array();
         foreach ($fragments as $fragment) {
             $subSql[] = "t.tag REGEXP '(" . DataUtil::formatForStore($fragment) . ")'";
