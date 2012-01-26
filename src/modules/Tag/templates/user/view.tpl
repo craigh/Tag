@@ -1,6 +1,6 @@
 {ajaxheader modname='Tag' ui=true}
 {if isset($selectedtag)}
-{pageaddvar name='title' value=$selectedtag}
+{pageaddvar name='title' value=$selectedtag[0]->getTag()|safetext}
 {/if}
 {pageaddvarblock}
 <script type="text/javascript">
