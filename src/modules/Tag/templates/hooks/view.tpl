@@ -3,7 +3,7 @@
 <div class='tagcloud'>
     <ul>
     {foreach from=$tags item='tag'}
-        <li class='activeTag'><a href='{modurl modname='Tag' type='user' func='view' tag=$tag.tag|safetext}'><span class='taghole'>&bull;</span>{$tag.tag|safetext}</a></li>
+        <li class='activeTag'><a href='{modurl modname='Tag' type='user' func='view' tag=$tag.slug|safetext}'><span class='taghole'>&bull;</span>{$tag.tag|safetext}</a></li>
     {/foreach}
     </ul>
 </div>

@@ -26,7 +26,7 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
      */
     public function getTags($module, $areaId, $objectId)
     {
-        $dql = "SELECT t.tag FROM Tag_Entity_Object o JOIN o.tags t" .
+        $dql = "SELECT t.tag, t.slug FROM Tag_Entity_Object o JOIN o.tags t" .
                " WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3";
 
         $em = ServiceUtil::getService('doctrine.entitymanager');

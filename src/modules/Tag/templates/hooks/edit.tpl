@@ -24,7 +24,7 @@
         <ul id="selectedTags">
         {if count($selectedTags) > 0}
         {foreach from=$selectedTags item='sTag'}
-            <li class='activeTag' id='li_{$sTag.tag|replace:' ':''|safetext}'><span class='taghole'>&bull;</span>{$sTag.tag|safetext} <a href='javascript:void(0);' title='{gt text='remove tag'}' id='tagRemove_{$sTag.tag|replace:' ':''|safetext}' class='tagRemover'>x</a></li>
+            <li class='activeTag' id='li_{$sTag.slug|safetext}'><span class='taghole'>&bull;</span>{$sTag.tag|safetext} <a href='javascript:void(0);' title='{gt text='remove tag'}' id='tagRemove_{$sTag.slug|safetext}' class='tagRemover'>x</a></li>
         {/foreach}
         {else}
             <li id='tag_null_li' style='display: none;'>This prevents an html validation error when $selectedtags is empty.</li>
@@ -35,7 +35,7 @@
         {gt text='Popular tags'}:
         <ul id='tagsAvailableToAdd'>
         {foreach from=$tagsByPopularity item='tag'}
-            <li class="tag_pop_{$tag.weight}"><a href='javascript:void(0);' title='{gt text="Add tag \"%s\"" tag1=$tag.tag|safetext}' id='TagAvail_{$tag.tag|replace:' ':''|safetext}' class='tag_available tooltips'>{$tag.tag|safetext}</a></li>
+            <li class="tag_pop_{$tag.weight}"><a href='javascript:void(0);' title='{gt text="Add tag \"%s\"" tag1=$tag.tag|safetext}' id='TagAvail_{$tag.slug|safetext}' class='tag_available tooltips'>{$tag.tag|safetext}</a></li>
         {foreachelse}
             <li>{gt text='No tags.'}</li>
         {/foreach}
@@ -43,7 +43,7 @@
     </div>
     <div id='activeTagContainer'>
         {foreach from=$selectedTags item='sTag'}
-        <input type="hidden" name="tag[tags][]" id="tagActive_{$sTag.tag|replace:' ':''|safetext}" value="{$sTag.tag|safetext}" />
+        <input type="hidden" name="tag[tags][]" id="tagActive_{$sTag.slug|safetext}" value="{$sTag.tag|safetext}" />
         {/foreach}
     </div>
 </fieldset>

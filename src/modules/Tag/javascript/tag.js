@@ -43,29 +43,29 @@ function initTagUI()
 
 function tag_add_available(event)
 {
+    var id = event.element().identify();
+    var tagnameparts = id.split("_");
+    var slug = tagnameparts.pop();
     // get tagname from element content
     var tagname = event.element().innerHTML;
-    _tag_add(tagname);
+    _tag_add(tagname, slug);
 }
 
-function _tag_add(tagname)
+function _tag_add(tagname, slug)
 {
-    // tagname may contain spaces, remove spaces in tag for use in ids
-    var validtagname = tagname.gsub(" ","");
-    
-    if ($('li_' + validtagname) == undefined) {
+    if ($('li_' + slug) == undefined) {
         // add visible tag
-        $('selectedTags').insert("<li class='activeTag' id='li_" + validtagname + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + validtagname + "' class='tagRemover'>x</a></li>\n");
+        $('selectedTags').insert("<li class='activeTag' id='li_" + slug + "'><span class='taghole'>&bull;</span>" + tagname + " <a href='javascript:void(0);' title='" + Zikula.__('remove tag') + "' id='tagRemove_" + slug + "' class='tagRemover'>x</a></li>\n");
         // engage tooltip observer
-        $('tagRemove_' + validtagname).tooltip = new Zikula.UI.Tooltip($('tagRemove_' + validtagname));
+        $('tagRemove_' + slug).tooltip = new Zikula.UI.Tooltip($('tagRemove_' + slug));
         // engage removal observer
-        $('tagRemove_' + validtagname).observe('click', tag_remove);
+        $('tagRemove_' + slug).observe('click', tag_remove);
         // add hidden form element
-        $('activeTagContainer').insert("<input type='hidden' name='tag[tags][]' id='tagActive_" + validtagname + "' value='" + tagname + "' />\n");
+        $('activeTagContainer').insert("<input type='hidden' name='tag[tags][]' id='tagActive_" + slug + "' value='" + tagname + "' />\n");
         // form.insert(new Element('input', {name: 'q', value: 'a', type: 'hidden'}));
 
     } else {
-        new Effect.Highlight('li_' + validtagname, { startcolor: '#99ff66', endcolor: '#C5E8F1' });
+        new Effect.Highlight('li_' + slug, { startcolor: '#99ff66', endcolor: '#C5E8F1' });
     }
 }
 
@@ -94,7 +94,9 @@ function tag_add_new(event)
     if (taglist) {
         var tagArray = tagListToCleanArray(taglist);
         tagArray.each(function(word) {
-            _tag_add(word);
+            // create temporary slug
+            var slug = word.replace(/\W+/g, '-');
+            _tag_add(word, slug);
         });
         $('tag_adder').value = '';
     }
