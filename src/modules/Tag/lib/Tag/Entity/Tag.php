@@ -39,7 +39,7 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     /**
      * slug
      * 
-     * @ORM\Column(name="slug", type="string", length=128, unique=true)
+     * @ORM\Column(name="slug", type="string", length=128)
      * @Gedmo\Slug
      */
     private $slug;
