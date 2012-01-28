@@ -67,7 +67,24 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     return false;
                 }
                 // update existing tags to include slug
+                $tags = $this->entityManager->getRepository('Tag_Entity_Tag')->findAll();
+                foreach ($tags as $tag) {
+                    $tag->setTag($tag->getTag());
+                    $this->entityManager->persist($tag);
+                }
+                $this->entityManager->flush();
                 // correct/remove orphaned entries in `tag_entity_object_tag_entity_tag`
+                $conn = $this->entityManager->getConnection();
+                $sql = "SELECT from tag_entity_object_tag_entity_tag";
+                $results = $conn->fetchAll($sql);
+                foreach ($results as $result) {
+                    $match = $this->entityManager->getRepository('Tag_Entity_Object')->findOneBy(array('id' => $result['tag_entity_object_id']));
+                    if (!$match) {
+                        $sql = "DELETE from tag_entity_object_tag_entity_tag WHERE tag_entity_object_id=" . $result['tag_entity_object_id'];
+                        $conn->query($sql);
+                    }
+                }
+                
             case '1.0.1':
                 // future upgrades
         }
