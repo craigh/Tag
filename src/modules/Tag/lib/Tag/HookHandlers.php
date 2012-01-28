@@ -122,9 +122,10 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
                     'objectId' => $objectId,
                     'areaId' => $areaId));
             if (isset($hookObject)) {
-                $this->entityManager->remove($hookObject);
+                $hookObject->clearTags();
+            } else {
+                $hookObject = new Tag_Entity_Object($module, $objectId, $areaId, $objUrl);
             }
-            $hookObject = new Tag_Entity_Object($module, $objectId, $areaId, $objUrl);
 
             foreach ($tagArray as $word) {
                 $tagObject = $this->entityManager->getRepository('Tag_Entity_Tag')->findOneBy(array('tag' => $word));

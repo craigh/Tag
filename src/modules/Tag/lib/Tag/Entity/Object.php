@@ -125,5 +125,10 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->url = $url;
     }
+    
+    public function clearTags()
+    {
+        $this->tags = null;
+    }
 
 }
