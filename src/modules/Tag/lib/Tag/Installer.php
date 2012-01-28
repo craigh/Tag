@@ -66,6 +66,8 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     LogUtil::registerError($e->getMessage());
                     return false;
                 }
+                // update existing tags to include slug
+                // correct/remove orphaned entries in `tag_entity_object_tag_entity_tag`
             case '1.0.1':
                 // future upgrades
         }
