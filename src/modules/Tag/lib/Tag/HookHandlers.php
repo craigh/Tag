@@ -36,6 +36,9 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $this->view = Zikula_View::getInstance("Tag");
         $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
         $this->request = ServiceUtil::getService('request');
+        // hooks do not autoload the bootstrap for the module
+        $helper = ServiceUtil::getService('doctrine_extensions');
+        $helper->getListener('sluggable');
     }
 
      /**
