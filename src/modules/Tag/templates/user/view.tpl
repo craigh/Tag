@@ -24,7 +24,7 @@
 <ul>
 {foreach from=$result item='r'}
     {if isset($r.link)}
-    <li>{$r.link}</li>
+    <li>{$r.link|safehtml}</li>
     {/if}
 {foreachelse}
     <li>{gt text='No items tagged'}</li>
