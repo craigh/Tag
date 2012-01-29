@@ -1,5 +1,5 @@
-Tag 1.0.0
-=========
+Tag
+===
 
 Tag is a content tagging module for the Zikula Application Framework.
 Tag is a hook-based module that utilizes the most advanced Zikula 1.3 technology
@@ -10,6 +10,8 @@ Ajax/prototype technologies.
 
 Tag has a plugin interface to allow other modules to define how their links
 are presented on the tag page.
+
+Tag provides special link decoding for use in shorturls.
 
 Tag provides a TagCloud block and ContentType plugin
 
