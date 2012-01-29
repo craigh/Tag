@@ -67,12 +67,26 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     return false;
                 }
                 // update existing tags to include slug
+                // this is a bit 'hacky' - have to temporarily replace old tags then
+                // put the old values back in and re-persist them.
+                $oldTags = array();
                 $tags = $this->entityManager->getRepository('Tag_Entity_Tag')->findAll();
                 foreach ($tags as $tag) {
-                    $tag->setTag($tag->getTag());
+                    $oldTags[$tag->getId()] = $tag->getTag();
+                    $tag->setTag('temp tag');
                     $this->entityManager->persist($tag);
                 }
                 $this->entityManager->flush();
+                $tags = $this->entityManager->getRepository('Tag_Entity_Tag')->findAll();
+                foreach ($tags as $tag) {
+                    $tag->setTag($oldTags[$tag->getId()]);
+                    $this->entityManager->persist($tag);
+                }
+                $this->entityManager->flush();
+                
+                // some orphaned data will remain in the database if previously used
+                // objects were edited. This data cannot be easily deleted but
+                // should cause no problems with usage.
                 
             case '1.0.1':
                 // future upgrades
