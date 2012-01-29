@@ -52,7 +52,7 @@ class Tag_Api_Search extends Zikula_AbstractApi
             $record = array(
                 'title' => $result->getTag(),
                 'text' => '',
-                'extra' => serialize(array('tag' => $result->getTag())),
+                'extra' => serialize(array('tag' => $result->getTag(), 'slug' => $result->getSlug())),
                 'module' => 'Tag',
                 'session' => $sessionId
             );
@@ -74,7 +74,8 @@ class Tag_Api_Search extends Zikula_AbstractApi
     public function search_check($args)
     {
         $datarow = &$args['datarow'];
-        $datarow['url'] = ModUtil::url('Tag', 'user', 'view', array('tag' => $datarow['title']));
+        $extra = unserialize($datarow['extra']);
+        $datarow['url'] = ModUtil::url('Tag', 'user', 'view', array('tag' => $extra['slug']));
         return true;
     }
 
