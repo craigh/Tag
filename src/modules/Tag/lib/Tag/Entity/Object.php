@@ -57,18 +57,30 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     private $objectId;
     /**
      * url field (object url)
+     * @var string
+     * @deprecated since Tag version 1.0.2
+     *     use $urlObject
      * 
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
-    private $url;
+    private $url = null;
+    /**
+     * url object
+     * @var Zikula_ModUrl
+     * 
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $urlObject = null;
 
-    public function __construct($module, $objectId, $areaId, $objUrl)
+    public function __construct($module, $objectId, $areaId, Zikula_ModUrl $urlObject)
     {
         $this->tags = new ArrayCollection();
         $this->setModule($module);
         $this->setObjectId($objectId);
         $this->setAreaId($areaId);
-        $this->setUrl($objUrl);
+        $this->setUrlObject($urlObject);
+        $this->setUrl($urlObject->getUrl(null, null, false, false)); // deprecated
+        // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
     }
 
     public function getId()
@@ -116,17 +128,35 @@ class Tag_Entity_Object extends Zikula_EntityAccess
         $this->objectId = $objectId;
     }
 
+    /**
+     * @deprecated since Tag version 1.0.2
+     * @return string 
+     */
     public function getUrl()
     {
         return $this->url;
     }
 
+    /**
+     * @deprecated since Tag version 1.0.2
+     * @param string $url
+     */
     public function setUrl($url)
     {
         $this->url = $url;
     }
     
-    public function clearTags()
+    public function getUrlObject()
+    {
+        return $this->urlObject;
+    }
+
+    public function setUrlObject($urlObject)
+    {
+        $this->urlObject = $urlObject;
+    }
+
+        public function clearTags()
     {
         $this->tags = null;
     }

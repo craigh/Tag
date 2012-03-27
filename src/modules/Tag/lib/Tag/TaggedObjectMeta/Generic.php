@@ -11,9 +11,9 @@
 class Tag_TaggedObjectMeta_Generic extends Tag_AbstractTaggedObjectMeta
 {
 
-    function __construct($objectId, $areaId, $module, $objectUrl)
+    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
     {
-        parent::__construct($objectId, $areaId, $module, $objectUrl);
+        parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
 
         $this->setObjectAuthor("");
         $this->setObjectDate("");

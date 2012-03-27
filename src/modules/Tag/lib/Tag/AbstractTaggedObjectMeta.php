@@ -14,17 +14,27 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
     private $objectId;
     private $areaId;
     private $module;
-    private $objectUrl;
+    /**
+     * Object's url string
+     * @deprecated since Tag version 1.0.2
+     * @var string 
+     */
+    private $urlString;
+    /**
+     * @var Zikula_ModUrl
+     */
+    private $urlObject;
     protected $title = '';
     protected $date = '';
     protected $author = '';
 
-    function __construct($objectId, $areaId, $module, $objectUrl)
+    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
     {
         $this->setObjectId($objectId);
         $this->setAreaId($areaId);
         $this->setModule($module);
-        $this->setObjectUrl($objectUrl);
+        $this->setObjectUrl($urlString); // deprecated
+        $this->setUrlObject($urlObject);
     }
 
     public function setObjectId($id)
@@ -59,12 +69,24 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
 
     public function setObjectUrl($url)
     {
-        $this->objectUrl = $url;
+        LogUtil::log('Tag_AbstractTaggedObjectMeta::setObjectUrl() is deprecated, please use Tag_AbstractTaggedObjectMeta::setObjectUrlObject()', E_USER_DEPRECATED);
+        $this->urlString = $url;
     }
 
     public function getObjectUrl()
     {
-        return $this->objectUrl;
+        LogUtil::log('Tag_AbstractTaggedObjectMeta::getObjectUrl() is deprecated, please use Tag_AbstractTaggedObjectMeta::getObjectUrlObject()', E_USER_DEPRECATED);
+        return $this->urlString;
+    }
+
+    public function setUrlObject($objectUrlObject)
+    {
+        $this->urlObject = $objectUrlObject;
+    }
+    
+    public function getUrlObject()
+    {
+        return $this->urlObject;
     }
 
     public function getTitle()
@@ -92,7 +114,10 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
             $dom = ZLanguage::getModuleDomain('Tag');
             $by = __('by', $dom);
             $on = __('on', $dom);
-            $link = "<a href='{$this->getObjectUrl()}'>$title</a>";
+            $url = $this->getUrlObject();
+            // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
+            $url = isset($url) ? $url->getUrl(null, null, false, false) : $this->getObjectUrl();
+            $link = "<a href='$url'>$title</a>";
             $sub = '';
             if (!empty($author)) {
                 $sub .= " $by $author";

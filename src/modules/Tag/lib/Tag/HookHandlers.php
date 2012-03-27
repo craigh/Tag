@@ -109,8 +109,7 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $module = $hook->getCaller();
         $objectId = $hook->getId();
         $areaId = $hook->getAreaId();
-        $objUrl = $hook->getUrl()->getUrl(null, null, false, false); // objecturl provided by subscriber
-        // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
+        $objUrl = $hook->getUrl();
 
         $hookdata = $this->validation->getObject();
         $hookdata = DataUtil::cleanVar($hookdata);
@@ -184,8 +183,6 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
      */
     public function processDelete(Zikula_ProcessHook $hook)
     {
-        $dom = ZLanguage::getModuleDomain('Tag');
-
         $module = $hook->getCaller();
         $objectId = $hook->getId();
         $areaId = $hook->getAreaId();
