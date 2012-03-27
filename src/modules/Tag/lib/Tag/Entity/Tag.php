@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -18,6 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
  * @ORM\Entity(repositoryClass="Tag_Entity_Repository_TagRepository")
  * @ORM\Table(name="tag_tag")
  */
+
 class Tag_Entity_Tag extends Zikula_EntityAccess
 {
 
@@ -29,6 +31,7 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * tag field (the 'word')
      *
@@ -36,6 +39,7 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * @Gedmo\Sluggable(slugField="slug")
      */
     private $tag;
+
     /**
      * slug
      * 
@@ -44,21 +48,37 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      */
     private $slug;
 
+    /**
+     * Set the Tag
+     * @param string $tag 
+     */
     public function setTag($tag)
     {
         $this->tag = $tag;
     }
 
+    /**
+     * retieve the tag
+     * @return string
+     */
     public function getTag()
     {
         return $this->tag;
     }
 
+    /**
+     * retrieve the record ID
+     * @return integer 
+     */
     public function getId()
     {
         return $this->id;
     }
-    
+
+    /**
+     * retrieve the slug
+     * @return string
+     */
     public function getSlug()
     {
         return $this->slug;

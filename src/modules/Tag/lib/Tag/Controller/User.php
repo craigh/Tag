@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -13,6 +14,7 @@
  */
 class Tag_Controller_User extends Zikula_AbstractController
 {
+
     /**
      * This method is the default function.
      *
@@ -24,7 +26,7 @@ class Tag_Controller_User extends Zikula_AbstractController
     {
         $this->redirect(ModUtil::url('Tag', 'user', 'view', $args));
     }
-    
+
     /**
      * This method provides a generic item list overview.
      *
@@ -37,7 +39,7 @@ class Tag_Controller_User extends Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
 
         $selectedTag = $this->request->getGet()->get('tag', isset($args['tag']) ? $args['tag'] : null);
-        
+
         if (isset($selectedTag)) {
             $result = $this->entityManager->getRepository('Tag_Entity_Object')->getTagged($selectedTag);
             foreach ($result as $key => $item) {
@@ -58,12 +60,13 @@ class Tag_Controller_User extends Zikula_AbstractController
                 $result[$key]['link'] = $objectMeta->getPresentationLink();
             }
             $this->view->assign('selectedtag', $this->entityManager->getRepository('Tag_Entity_Tag')->findBy(array('slug' => $selectedTag)))
-                       ->assign('result', $result);
+                    ->assign('result', $result);
         }
-        
+
         $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency();
 
         return $this->view->assign('tags', $tagsByPopularity)
-                          ->fetch('user/view.tpl');
+                        ->fetch('user/view.tpl');
     }
+
 }

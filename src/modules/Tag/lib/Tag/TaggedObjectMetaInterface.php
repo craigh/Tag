@@ -10,6 +10,7 @@
  */
 interface Tag_TaggedObjectMetaInterface
 {
+
     public function setObjectTitle($title);
 
     public function setObjectDate($date);

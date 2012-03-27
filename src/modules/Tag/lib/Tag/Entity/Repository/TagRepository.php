@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -15,6 +16,7 @@ use Doctrine\ORM;
  */
 class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
 {
+
     /**
      * get an array of tags by frequency of usage sorted DESC
      * 
@@ -24,7 +26,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
     public function getTagsByFrequency($limit = 10, $fillLimit = true)
     {
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        
+
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -33,14 +35,14 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm->addScalarResult('freq', 'freq');
 
         $sql = "SELECT t.id, t.tag, t.slug, count(j.tag_entity_tag_id) freq" .
-               " FROM tag_entity_object_tag_entity_tag j" .
-               " LEFT JOIN tag_tag t ON j.tag_entity_tag_id = t.id" .
-               " GROUP BY j.tag_entity_tag_id ORDER BY freq DESC";
+                " FROM tag_entity_object_tag_entity_tag j" .
+                " LEFT JOIN tag_tag t ON j.tag_entity_tag_id = t.id" .
+                " GROUP BY j.tag_entity_tag_id ORDER BY freq DESC";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
         $tags = $em->createNativeQuery($sql, $rsm)
-                   ->getResult();
+                ->getResult();
         $result = array();
         if (count($tags) > 0) {
             $weightUnit = $tags[0]['freq'] / 5;
@@ -80,8 +82,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
      */
     private function getWeight($unit, $freq)
     {
-        switch ($freq)
-        {
+        switch ($freq) {
             case (0 <= $freq) && ($freq < $unit):
                 return '20';
                 break;
@@ -99,7 +100,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
                 break;
         }
     }
-    
+
     /**
      * get an array of tags matching text fragment(s)
      * 
@@ -113,7 +114,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
             return array();
         }
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        
+
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -131,10 +132,10 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
             $sql .= " LIMIT $limit";
         }
         $tags = $em->createNativeQuery($sql, $rsm)
-                   ->getResult();
+                ->getResult();
         return $tags;
     }
-    
+
     /**
      * get an array of tags in random order
      * 
@@ -146,18 +147,27 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $dql = "SELECT t from Tag_Entity_Tag t";
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $result = $em->createQuery($dql)
-                     ->getResult();
+                ->getResult();
         shuffle($result);
         if ($limit > 0) {
             $result = array_slice($result, 0, $limit);
         }
         return $result;
     }
-    
+
+    /**
+     * get tags with a count of tagged objects
+     * 
+     * @param integer $limit
+     * @param integer $offset
+     * @param string $orderBy
+     * @param string $sortDir
+     * @return Object Zikula_EntityAccess 
+     */
     public function getTagsWithCount($limit = 0, $offset = 0, $orderBy = 't.tag', $sortDir = 'ASC')
     {
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        
+
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -166,14 +176,15 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         $rsm->addScalarResult('cnt', 'cnt');
 
         $sql = "SELECT t.id, t.tag, t.slug, count(j.tag_entity_tag_id) cnt FROM tag_tag t" .
-               " LEFT JOIN tag_entity_object_tag_entity_tag j" .
-               " ON t.id = j.tag_entity_tag_id GROUP BY t.id" .
-               " ORDER BY $orderBy $sortDir";
+                " LEFT JOIN tag_entity_object_tag_entity_tag j" .
+                " ON t.id = j.tag_entity_tag_id GROUP BY t.id" .
+                " ORDER BY $orderBy $sortDir";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
         $tags = $em->createNativeQuery($sql, $rsm)
-                   ->getResult();
+                ->getResult();
         return $tags;
     }
+
 }

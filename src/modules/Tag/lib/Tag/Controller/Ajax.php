@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -8,11 +9,12 @@
  * information regarding copyright and licensing.
  */
 
-/** 
+/**
  * Access to actions initiated through AJAX for the Tag module.
  */
 class Tag_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
+
     /**
      * Performs a search based on the fragment entered so far.
      *

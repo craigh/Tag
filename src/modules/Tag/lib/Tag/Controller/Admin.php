@@ -80,7 +80,7 @@ class Tag_Controller_Admin extends Zikula_AbstractController
                 ->getTagsWithCount(0, 0, $fieldmap[$orderby], $orderdir);
 
         return $this->view->assign('tags', $tags)
-                ->fetch('admin/view.tpl');
+                        ->fetch('admin/view.tpl');
     }
 
     /**
@@ -172,8 +172,8 @@ class Tag_Controller_Admin extends Zikula_AbstractController
             $hookObject = $this->entityManager
                     ->getRepository('Tag_Entity_Object')
                     ->findOneBy(array(
-                        'module' => $object['module'],
-                        'objectId' => $object['id_module']));
+                'module' => $object['module'],
+                'objectId' => $object['id_module']));
             if (isset($hookObject)) {
                 $this->entityManager->remove($hookObject);
             }

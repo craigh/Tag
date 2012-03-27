@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -13,6 +14,7 @@
  */
 class Tag_FormHandler_Admin_Edit extends Zikula_Form_AbstractHandler
 {
+
     /**
      * Tag id.
      *
@@ -45,16 +47,16 @@ class Tag_FormHandler_Admin_Edit extends Zikula_Form_AbstractHandler
                 return LogUtil::registerError($this->__f('Tag with id %s not found', $id));
             }
         }
-        
+
         if (!$view->getStateData('returnurl')) {
-			$editurl = ModUtil::url('Tag', 'admin', 'edit');
+            $editurl = ModUtil::url('Tag', 'admin', 'edit');
             $returnurl = System::serverGetVar('HTTP_REFERER');
             if (strpos($returnurl, $editurl) === 0) {
                 $returnurl = ModUtil::url('Tag', 'admin', 'main');
-			}
+            }
             $view->setStateData('returnurl', $returnurl);
         }
-        
+
         return true;
     }
 
@@ -80,9 +82,9 @@ class Tag_FormHandler_Admin_Edit extends Zikula_Form_AbstractHandler
             $this->entityManager->remove($tag);
             $this->entityManager->flush();
             LogUtil::registerStatus($this->__f('Item [id# %s] deleted!', $this->id));
-            return $view->redirect($returnurl);            
+            return $view->redirect($returnurl);
         }
-        
+
         // check for valid form
         if (!$view->isValid()) {
             return false;
@@ -102,7 +104,8 @@ class Tag_FormHandler_Admin_Edit extends Zikula_Form_AbstractHandler
         $this->entityManager->persist($tag);
         $this->entityManager->flush();
 
-        return $view->redirect(ModUtil::url('Tag', 'admin','view'));
+        return $view->redirect(ModUtil::url('Tag', 'admin', 'view'));
     }
+
 }
 

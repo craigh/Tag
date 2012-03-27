@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -28,14 +29,14 @@ class Tag_Installer extends Zikula_AbstractInstaller
             LogUtil::registerError($e->getMessage());
             return false;
         }
-        
+
         $this->setVars(array(
             'poptagsoneditform' => 10,
             'crpTagMigrateComplete' => false,
         ));
 
         $this->defaultdata();
-        
+
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
         EventUtil::registerPersistentModuleHandler('Tag', 'installer.module.uninstalled', array('Tag_HookHandlers', 'moduleDelete'));
         EventUtil::registerPersistentModuleHandler('Tag', 'module.content.gettypes', array('Tag_Handlers', 'getTypes'));
@@ -56,8 +57,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.0.0':
                 // update the table
                 try {
@@ -83,11 +83,11 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     $this->entityManager->persist($tag);
                 }
                 $this->entityManager->flush();
-                
-                // some orphaned data will remain in the database if previously used
-                // objects were edited. This data cannot be easily deleted but
-                // should cause no problems with usage.
-                
+
+            // some orphaned data will remain in the database if previously used
+            // objects were edited. This data cannot be easily deleted but
+            // should cause no problems with usage.
+
             case '1.0.1':
                 // update the table
                 try {
@@ -97,7 +97,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     return false;
                 }
             case '1.0.2':
-                // future upgrades
+            // future upgrades
         }
 
         // Update successful
@@ -116,11 +116,11 @@ class Tag_Installer extends Zikula_AbstractInstaller
     {
         // drop tables
         DoctrineHelper::dropSchema($this->entityManager, array('Tag_Entity_Tag', 'Tag_Entity_Object'));
-        
+
         // unregister handlers
         EventUtil::unregisterPersistentModuleHandlers('Tag');
         HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
-        
+
         // remove all module vars
         $this->delVars();
 
@@ -142,4 +142,5 @@ class Tag_Installer extends Zikula_AbstractInstaller
         }
         $this->entityManager->flush();
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -27,16 +28,16 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
     public function getTags($module, $areaId, $objectId)
     {
         $dql = "SELECT t.tag, t.slug FROM Tag_Entity_Object o JOIN o.tags t" .
-               " WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3";
+                " WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3";
 
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $query = $em->createQuery($dql);
         return $query->setParameter(1, $module)
-                ->setParameter(2, $areaId)
-                ->setParameter(3, $objectId)
-                ->getArrayResult(); // hydrate result to array
+                        ->setParameter(2, $areaId)
+                        ->setParameter(3, $objectId)
+                        ->getArrayResult(); // hydrate result to array
     }
-    
+
     /**
      * get all objects tagged as specified from provided slug
      * 
@@ -46,12 +47,12 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
     public function getTagged($tag)
     {
         $dql = "SELECT o FROM Tag_Entity_Object o JOIN o.tags t" .
-               " WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC";
-        
+                " WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC";
+
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $query = $em->createQuery($dql);
         return $query->setParameter(1, $tag)
-                ->getArrayResult(); // hydrate result to array
+                        ->getArrayResult(); // hydrate result to array
     }
-    
+
 }

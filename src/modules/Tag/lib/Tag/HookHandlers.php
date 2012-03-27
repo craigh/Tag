@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -7,19 +8,21 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
 {
+
     /**
      * Zikula_View instance
      * @var object
      */
     private $view;
+
     /**
      * Zikula Service Doctrine EntityManager instance
      * @var object
      */
     private $entityManager;
+
     /**
      * Zikula Request instance
      * @var object
@@ -41,7 +44,7 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $helper->getListener('sluggable');
     }
 
-     /**
+    /**
      * Display hook for edit views.
      *
      * @param Zikula_DisplayHook $hook
@@ -58,14 +61,14 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $hookObjectId = $hook->getId();
         $objectId = isset($hookObjectId) ? $hookObjectId : 0;
         $areaId = $hook->getAreaId();
-        
+
         if (!empty($objectId)) {
             $selectedTags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
         } else {
             $selectedTags = array();
         }
         $this->view->assign('selectedTags', $selectedTags);
-        
+
         $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
         $this->view->assign('tagsByPopularity', $tagsByPopularity);
 
@@ -114,15 +117,15 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $hookdata = $this->validation->getObject();
         $hookdata = DataUtil::cleanVar($hookdata);
         $tagArray = $this->cleanTagArray($hookdata['tags']);
-        
+
         if (count($tagArray) > 0) {
             // search for existing object
             $hookObject = $this->entityManager
-                ->getRepository('Tag_Entity_Object')
-                ->findOneBy(array(
-                    'module' => $module,
-                    'objectId' => $objectId,
-                    'areaId' => $areaId));
+                    ->getRepository('Tag_Entity_Object')
+                    ->findOneBy(array(
+                'module' => $module,
+                'objectId' => $objectId,
+                'areaId' => $areaId));
             if (isset($hookObject)) {
                 $hookObject->clearTags();
             } else {
@@ -190,9 +193,9 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $hookObject = $this->entityManager
                 ->getRepository('Tag_Entity_Object')
                 ->findOneBy(array(
-                    'module' => $module,
-                    'objectId' => $objectId,
-                    'areaId' => $areaId));
+            'module' => $module,
+            'objectId' => $objectId,
+            'areaId' => $areaId));
         $this->entityManager->remove($hookObject);
         $this->entityManager->flush();
     }
@@ -220,7 +223,7 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
             LogUtil::registerStatus(__('Hooked content in Tags removed.', ZLanguage::getModuleDomain('Tag')));
         }
     }
-    
+
     /**
      * clean up words in array values
      * 
@@ -239,5 +242,5 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         }
         return $final;
     }
-    
+
 }

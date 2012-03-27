@@ -12,22 +12,38 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
 {
 
     private $objectId;
+    
     private $areaId;
+    
     private $module;
+
     /**
      * Object's url string
      * @deprecated since Tag version 1.0.2
      * @var string 
      */
     private $urlString;
+
     /**
      * @var Zikula_ModUrl
      */
     private $urlObject;
+    
     protected $title = '';
+    
     protected $date = '';
+    
     protected $author = '';
 
+    /**
+     * Constructor
+     * 
+     * @param integer $objectId
+     * @param integer $areaId
+     * @param string $module
+     * @param string $urlString **deprecated**
+     * @param Zikula_ModUrl $urlObject 
+     */
     function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
     {
         $this->setObjectId($objectId);
@@ -67,23 +83,41 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
         return $this->module;
     }
 
+    /**
+     * Set the object's url string
+     * @deprecated since Tag version 1.0.2
+     * @param type $url 
+     */
     public function setObjectUrl($url)
     {
         LogUtil::log('Tag_AbstractTaggedObjectMeta::setObjectUrl() is deprecated, please use Tag_AbstractTaggedObjectMeta::setObjectUrlObject()', E_USER_DEPRECATED);
         $this->urlString = $url;
     }
 
+    /**
+     * Get the object's url string
+     * @deprecated since Tag version 1.0.2
+     * @return type 
+     */
     public function getObjectUrl()
     {
         LogUtil::log('Tag_AbstractTaggedObjectMeta::getObjectUrl() is deprecated, please use Tag_AbstractTaggedObjectMeta::getObjectUrlObject()', E_USER_DEPRECATED);
         return $this->urlString;
     }
 
-    public function setUrlObject($objectUrlObject)
+    /**
+     * Set the object's Url Object
+     * @param Zikula_ModUrl $objectUrlObject 
+     */
+    public function setUrlObject(Zikula_ModUrl $objectUrlObject)
     {
         $this->urlObject = $objectUrlObject;
     }
-    
+
+    /**
+     * Get the object's Url Object
+     * @return Zikula_ModUrl
+     */
     public function getUrlObject()
     {
         return $this->urlObject;
@@ -125,7 +159,7 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
             if (!empty($date)) {
                 $sub .= " $on $date";
             }
-            $link .= ( !empty($sub)) ? " (" . trim($sub) . ")" : '';
+            $link .= (!empty($sub)) ? " (" . trim($sub) . ")" : '';
         }
         return $link;
     }
