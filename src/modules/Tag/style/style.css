@@ -12,14 +12,14 @@
     margin-top: 5px;
 }
 
-.tagcloud ul,
-#selectedTags {
+#z-maincontent .tagcloud ul,
+#z-maincontent #selectedTags {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-.tagcloud ul li,
-#selectedTags li {
+#z-maincontent .tagcloud ul li,
+#z-maincontent #selectedTags li {
     list-style-type: none;
     display: inline;
     margin: 0;
@@ -49,7 +49,7 @@
 }
 
 /* TAG DISPLAY */
-.activeTag {
+#z-maincontent .activeTag {
     font-size: 80%;
     background: #C5E8F1 15px 50% no-repeat;
     text-align: left;
@@ -61,10 +61,10 @@
     border-radius: 10px 3px 3px 10px;
     color: #444;
 }
-.activeTag .tagRemover {
+#z-maincontent .activeTag .tagRemover {
     font-weight: 700;
 }
-.activeTag .taghole {
+#z-maincontent .activeTag .taghole {
     color: #95C9EF;
     margin-right: 4px;
 }
