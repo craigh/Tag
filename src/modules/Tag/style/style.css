@@ -50,8 +50,9 @@
 
 /* TAG DISPLAY */
 #z-maincontent .activeTag {
-    font-size: 80%;
+    font-size: 10px;
     color: #467AA7;
+    font-family: Veranda, Tahoma, Arial, sans-serif;
     background: #C5E8F1 15px 50% no-repeat;
     text-align: left;
     padding: 2px 2px 2px 2px;
