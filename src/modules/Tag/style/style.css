@@ -51,6 +51,7 @@
 /* TAG DISPLAY */
 #z-maincontent .activeTag {
     font-size: 80%;
+    color: #467AA7;
     background: #C5E8F1 15px 50% no-repeat;
     text-align: left;
     padding: 2px 2px 2px 2px;
@@ -59,7 +60,12 @@
     -webkit-border-radius: 10px 3px 3px 10px;
     -moz-border-radius: 10px 3px 3px 10px;
     border-radius: 10px 3px 3px 10px;
-    color: #444;
+}
+#z-maincontent .activeTag a {
+    color: #467AA7;
+}
+#z-maincontent .activeTag a:hover {
+    color: #2A5A8A
 }
 #z-maincontent .activeTag .tagRemover {
     font-weight: 700;
