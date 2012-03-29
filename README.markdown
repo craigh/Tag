@@ -17,6 +17,14 @@ Tag provides a TagCloud block and ContentType plugin
 
 Tag can migrate/import crpTag data.
 
+###Version 1.0.2
+
+_Unreleased_
+
+This release changes the Database and now stores the full Zikula_ModUrl object in the DB
+instead of simply the url string. The string is maintained for BC, but methods utilizing
+that data are deprecated and module others must move to using the full object before
+version 1.0.3.
 
 ###Version 1.0.1
 
