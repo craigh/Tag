@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 07:19-0500\n"
+"POT-Creation-Date: 2012-03-31 10:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/Tag/AbstractTaggedObjectMeta.php:93
+#: lib/Tag/AbstractTaggedObjectMeta.php:149
 msgid "by"
 msgstr ""
 
-#: lib/Tag/AbstractTaggedObjectMeta.php:94
+#: lib/Tag/AbstractTaggedObjectMeta.php:150
 msgid "on"
 msgstr ""
 
@@ -74,12 +74,12 @@ msgstr ""
 msgid "CrpTag has been migrated. %1$s objects and %2$s tags completed."
 msgstr ""
 
-#: lib/Tag/FormHandler/Admin/Edit.php:45
+#: lib/Tag/FormHandler/Admin/Edit.php:47
 #, php-format
 msgid "Tag with id %s not found"
 msgstr ""
 
-#: lib/Tag/FormHandler/Admin/Edit.php:82
+#: lib/Tag/FormHandler/Admin/Edit.php:84
 #, php-format
 msgid "Item [id# %s] deleted!"
 msgstr ""
