@@ -19,12 +19,14 @@ Tag can migrate/import crpTag data.
 
 ###Version 1.0.2
 
-_Unreleased_
+_31 March 2012_
 
 This release changes the Database and now stores the full Zikula_ModUrl object in the DB
 instead of simply the url string. The string is maintained for BC, but methods utilizing
-that data are deprecated and module others must move to using the full object before
+that data are deprecated and module authors *must* move to using the full object before
 version 1.0.3.
+
+This release also improves style.css for correct display in multiple themes.
 
 ###Version 1.0.1
 
