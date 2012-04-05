@@ -97,7 +97,9 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     return false;
                 }
             case '1.0.2':
-            // future upgrades
+                // no changes needed
+            case '1.0.3':
+                // future upgrades
         }
 
         // Update successful
