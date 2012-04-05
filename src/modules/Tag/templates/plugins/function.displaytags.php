@@ -36,7 +36,7 @@ function smarty_function_displaytags($params, &$smarty)
         $smarty->assign('tags', $tags);
         $display = $smarty->fetch('file:modules/Tag/templates/hooks/view.tpl');
         if ($assign) {
-            $smarty->assign($assign, $banner['displaystring']);
+            $smarty->assign($assign, $display);
         } else {
             return $display;
         }
