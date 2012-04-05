@@ -25,8 +25,8 @@ class Tag_Version extends Zikula_AbstractVersion
         $meta['displayname'] = $this->__('Tag');
         $meta['description'] = $this->__("Tagging module");
         $meta['url'] = $this->__('tag');
-        $meta['version'] = '1.0.2';
-        $meta['core_min'] = '1.3.2'; // requires minimum 1.3.2 or later
+        $meta['version'] = '1.0.3-dev';
+        $meta['core_min'] = '1.3.3'; // requires minimum 1.3.3 or later
         $meta['core_max'] = '1.3.99'; // doesn't work with later branches
         $meta['securityschema'] = array('Tag::' => '::');
         $meta['capabilities'] = array();
