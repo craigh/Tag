@@ -149,8 +149,7 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
             $by = __('by', $dom);
             $on = __('on', $dom);
             $url = $this->getUrlObject();
-            // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
-            $url = isset($url) ? $url->getUrl(null, null, false, false) : $this->getObjectUrl();
+            $url = isset($url) ? $url->getUrl() : $this->getObjectUrl();
             $link = "<a href='$url'>$title</a>";
             $sub = '';
             if (!empty($author)) {
