@@ -234,10 +234,12 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
     private function cleanTagArray($array)
     {
         $final = array();
-        foreach ($array as $word) {
-            $word = trim(strip_tags($word));
-            if (!empty($word)) {
-                $final[] = $word;
+        if (isset($array) && is_array($array)) {
+            foreach ($array as $word) {
+                $word = trim(strip_tags($word));
+                if (!empty($word)) {
+                    $final[] = $word;
+                }
             }
         }
         return $final;
