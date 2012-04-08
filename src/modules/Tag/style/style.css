@@ -64,9 +64,11 @@
 }
 #z-maincontent .activeTag a {
     color: #467AA7;
+    text-decoration: none;
 }
 #z-maincontent .activeTag a:hover {
-    color: #2A5A8A
+    color: #2A5A8A;
+    text-decoration: none;
 }
 #z-maincontent .activeTag .tagRemover {
     font-weight: 700;
