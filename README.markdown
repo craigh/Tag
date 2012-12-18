@@ -1,6 +1,8 @@
 Tag
 ===
 
+**__Requires Zikula Core 1.3.x__**
+
 Tag is a content tagging module for the Zikula Application Framework.
 Tag is a hook-based module that utilizes the most advanced Zikula 1.3 technology
 including Doctrine 2.1 and Form lib.
