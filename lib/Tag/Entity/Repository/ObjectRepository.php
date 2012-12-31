@@ -30,8 +30,7 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
         $dql = "SELECT t.tag, t.slug FROM Tag_Entity_Object o JOIN o.tags t" .
                 " WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3";
 
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-        $query = $em->createQuery($dql);
+        $query = $this->_em->createQuery($dql);
         return $query->setParameter(1, $module)
                         ->setParameter(2, $areaId)
                         ->setParameter(3, $objectId)
@@ -49,8 +48,7 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
         $dql = "SELECT o FROM Tag_Entity_Object o JOIN o.tags t" .
                 " WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC";
 
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-        $query = $em->createQuery($dql);
+        $query = $this->_em->createQuery($dql);
         return $query->setParameter(1, $tag)
                         ->getArrayResult(); // hydrate result to array
     }

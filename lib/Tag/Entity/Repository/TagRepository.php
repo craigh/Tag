@@ -25,8 +25,6 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
      */
     public function getTagsByFrequency($limit = 10, $fillLimit = true)
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -41,7 +39,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
-        $tags = $em->createNativeQuery($sql, $rsm)
+        $tags = $this->_em->createNativeQuery($sql, $rsm)
                 ->getResult();
         $result = array();
         if (count($tags) > 0) {
@@ -113,8 +111,6 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         if (empty($fragments)) {
             return array();
         }
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -131,7 +127,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
-        $tags = $em->createNativeQuery($sql, $rsm)
+        $tags = $this->_em->createNativeQuery($sql, $rsm)
                 ->getResult();
         return $tags;
     }
@@ -145,8 +141,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
     public function getTagsByRandom($limit = 0)
     {
         $dql = "SELECT t from Tag_Entity_Tag t";
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-        $result = $em->createQuery($dql)
+        $result = $this->_em->createQuery($dql)
                 ->getResult();
         shuffle($result);
         if ($limit > 0) {
@@ -166,8 +161,6 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
      */
     public function getTagsWithCount($limit = 0, $offset = 0, $orderBy = 't.tag', $sortDir = 'ASC')
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-
         $rsm = new ORM\Query\ResultSetMapping;
         $rsm->addEntityResult('Tag_Entity_Tag', 't');
         $rsm->addFieldResult('t', 'tag', 'tag');
@@ -182,7 +175,7 @@ class Tag_Entity_Repository_TagRepository extends ORM\EntityRepository
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
-        $tags = $em->createNativeQuery($sql, $rsm)
+        $tags = $this->_em->createNativeQuery($sql, $rsm)
                 ->getResult();
         return $tags;
     }
