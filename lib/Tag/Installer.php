@@ -39,6 +39,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
 
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
         EventUtil::registerPersistentModuleHandler('Tag', 'installer.module.uninstalled', array('Tag_HookHandlers', 'moduleDelete'));
+        EventUtil::registerPersistentModuleHandler('Tag', 'installer.subscriberarea.uninstalled', array('Tag_HookHandlers', 'moduleDeleteByArea'));
         EventUtil::registerPersistentModuleHandler('Tag', 'module.content.gettypes', array('Tag_Handlers', 'getTypes'));
         EventUtil::registerPersistentModuleHandler('Tag', 'view.init', array('Tag_Handlers', 'registerPluginDir'));
 
@@ -97,7 +98,7 @@ class Tag_Installer extends Zikula_AbstractInstaller
                     return false;
                 }
             case '1.0.2':
-                // no changes needed
+                EventUtil::registerPersistentModuleHandler('Tag', 'installer.subscriberarea.uninstalled', array('Tag_HookHandlers', 'moduleDeleteByArea'));
             case '1.0.3':
                 // future upgrades
         }

@@ -225,6 +225,30 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
     }
 
     /**
+     * Handle hook uninstall event "installer.subscriberarea.uninstalled".
+     * Receives $areaId in $args
+     *
+     * @param Zikula_Event $event
+     *
+     * @return void
+     */
+    public static function moduleDeleteByArea(Zikula_Event $event)
+    {
+        $areaId = $event['areaid'];
+        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $hookObjects = $em->getRepository('Tag_Entity_Object')
+                ->findBy(array('areaId' => $areaId));
+        // better to do it this way than DQL because removes related objects also
+        if (count($hookObjects) > 0) {
+            foreach ($hookObjects as $hookObject) {
+                $em->remove($hookObject);
+            }
+            $em->flush();
+            LogUtil::registerStatus(__f('Hooked content in Tags removed for area %s.', $areaId, ZLanguage::getModuleDomain('Tag')));
+        }
+    }
+
+    /**
      * clean up words in array values
      * 
      * @param array $array
