@@ -38,7 +38,7 @@ function initTagUI()
         tokens: ',',
         minChars: 3
     });
-    new Ajax.Autocompleter('tag_adder', 'tag_choices', Zikula.Config.baseURL + 'ajax.php?module=tag&func=gettags', options);
+    new Ajax.Autocompleter('tag_adder', 'tag_choices', Zikula.Config.baseURL + 'ajax.php?module=tag&type=ajax&func=gettags', options);
 }
 
 function tag_add_available(event)
