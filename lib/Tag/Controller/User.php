@@ -48,6 +48,11 @@ class Tag_Controller_User extends Zikula_AbstractController
                     "Tag_TaggedObjectMeta_$item[module]",
                     "Tag_TaggedObjectMeta_Generic",
                 );
+                // core 1.3.7 compatibility
+                $moduleBundle = ModUtil::getModule($item['module']);
+                if (!empty($moduleBundle)) {
+                    array_unshift($possibleClassNames, $moduleBundle->getNamespace() . '\TaggedObjectMeta\\' . $moduleBundle->getName());
+                }
                 foreach ($possibleClassNames as $classname) {
                     if (class_exists($classname)) {
                         break;

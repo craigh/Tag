@@ -18,7 +18,9 @@ and visibility checks within the target module!
 Requirements
 ============
 
-Add a class to your module called `ModuleName_TaggedObjectMeta_ModuleName`
+In pre-1.3.7 modules, add a class to your module called `ModuleName_TaggedObjectMeta_ModuleName`.
+In namespaced modules, the class should be `Vendor\Module\NameModule\TaggedObjectMeta\VendorNameModule`
+for example: `Zikula\Module\DizkusModule\TaggedObjectMeta\ZikulaDizkusModule`
 
 This class must extend `Tag_AbstractTaggedObjectMeta`
 
@@ -59,3 +61,4 @@ example to you in your own development:
   - Pages
   - Content
   - PostCalendar
+  - Dizkus (namespaced)
