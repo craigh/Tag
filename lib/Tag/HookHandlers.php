@@ -109,41 +109,14 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
             return;
         }
 
-        $module = $hook->getCaller();
-        $objectId = $hook->getId();
-        $areaId = $hook->getAreaId();
-        $objUrl = $hook->getUrl();
-
-        $hookdata = $this->validation->getObject();
-        $hookdata = DataUtil::cleanVar($hookdata);
-        $tagArray = $this->cleanTagArray($hookdata['tags']);
-
-        if (count($tagArray) > 0) {
-            // search for existing object
-            $hookObject = $this->entityManager
-                    ->getRepository('Tag_Entity_Object')
-                    ->findOneBy(array(
-                'module' => $module,
-                'objectId' => $objectId,
-                'areaId' => $areaId));
-            if (isset($hookObject)) {
-                $hookObject->clearTags();
-            } else {
-                $hookObject = new Tag_Entity_Object($module, $objectId, $areaId, $objUrl);
-            }
-
-            foreach ($tagArray as $word) {
-                $tagObject = $this->entityManager->getRepository('Tag_Entity_Tag')->findOneBy(array('tag' => $word));
-                if (!isset($tagObject)) {
-                    $tagObject = new Tag_Entity_Tag();
-                    $tagObject->setTag($word);
-                    $this->entityManager->persist($tagObject);
-                }
-                $hookObject->assignToTags($tagObject);
-            }
-            $this->entityManager->persist($hookObject);
-            $this->entityManager->flush();
-        }
+        $args = array(
+            'module' => $hook->getCaller(),
+            'objectId' => $hook->getId(),
+            'areaId' => $hook->getAreaId(),
+            'objUrl' => $hook->getUrl(),
+            'hookdata' => $this->validation->getObject(),
+        );
+        ModUtil::apiFunc('Tag', 'user', 'tagObject', $args);
     }
 
     /**
@@ -247,26 +220,4 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
             LogUtil::registerStatus(__f('Hooked content in Tags removed for area %s.', $areaId, ZLanguage::getModuleDomain('Tag')));
         }
     }
-
-    /**
-     * clean up words in array values
-     * 
-     * @param array $array
-     * 
-     * @return array
-     */
-    private function cleanTagArray($array)
-    {
-        $final = array();
-        if (isset($array) && is_array($array)) {
-            foreach ($array as $word) {
-                $word = trim(strip_tags($word));
-                if (!empty($word)) {
-                    $final[] = $word;
-                }
-            }
-        }
-        return $final;
-    }
-
 }

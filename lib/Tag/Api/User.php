@@ -47,4 +47,76 @@ class Tag_Api_User extends Zikula_AbstractApi
 
         return $url;
     }
+
+    /**
+     * Set the tags for an object
+     *
+     * @param mixed[] $args {
+     *      @type string        $module the module name
+     *      @type integer       $objectId the id of the object being tagged
+     *      @type integer       $areaId the areaId
+     *      @type Zikula_ModUrl $objUrl
+     *      @type array         $hookdata
+     * }
+     */
+    public function tagObject(array $args)
+    {
+        $module = $args['module'];
+        $objectId = $args['objectId'];
+        $areaId = $args['areaId'];
+        $objUrl = $args['objUrl'];
+        $hookdata = $args['hookdata'];
+
+        $hookdata = DataUtil::cleanVar($hookdata);
+        $tagArray = $this->cleanTagArray($hookdata['tags']);
+
+        if (count($tagArray) > 0) {
+            // search for existing object
+            $hookObject = $this->entityManager
+                ->getRepository('Tag_Entity_Object')
+                ->findOneBy(array(
+                    'module' => $module,
+                    'objectId' => $objectId,
+                    'areaId' => $areaId));
+            if (isset($hookObject)) {
+                $hookObject->clearTags();
+            } else {
+                $hookObject = new Tag_Entity_Object($module, $objectId, $areaId, $objUrl);
+            }
+
+            foreach ($tagArray as $word) {
+                $tagObject = $this->entityManager->getRepository('Tag_Entity_Tag')->findOneBy(array('tag' => $word));
+                if (!isset($tagObject)) {
+                    $tagObject = new Tag_Entity_Tag();
+                    $tagObject->setTag($word);
+                    $this->entityManager->persist($tagObject);
+                }
+                $hookObject->assignToTags($tagObject);
+            }
+            $this->entityManager->persist($hookObject);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * clean up words in array values
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    private function cleanTagArray($array)
+    {
+        $final = array();
+        if (isset($array) && is_array($array)) {
+            foreach ($array as $word) {
+                $word = trim(strip_tags($word));
+                if (!empty($word)) {
+                    $final[] = $word;
+                }
+            }
+        }
+        return $final;
+    }
+
 }
