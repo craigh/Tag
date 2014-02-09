@@ -10,6 +10,7 @@
  */
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\Core\ModUrl;
 
 //use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
 
@@ -73,13 +74,13 @@ class Tag_Entity_Object extends Zikula_EntityAccess
 
     /**
      * url object
-     * @var Zikula_ModUrl
+     * @var ModUrl
      * 
      * @ORM\Column(type="object", nullable=true)
      */
     private $urlObject = null;
 
-    public function __construct($module, $objectId, $areaId, Zikula_ModUrl $urlObject)
+    public function __construct($module, $objectId, $areaId, ModUrl $urlObject)
     {
         $this->tags = new ArrayCollection();
         $this->setModule($module);
@@ -191,7 +192,7 @@ class Tag_Entity_Object extends Zikula_EntityAccess
 
     /**
      * get the hooked object UrlObject
-     * @return Zikula_ModUrl
+     * @return ModUrl
      */
     public function getUrlObject()
     {
@@ -200,9 +201,9 @@ class Tag_Entity_Object extends Zikula_EntityAccess
 
     /**
      * set the hooked object UrlObject
-     * @param Zikula_ModUrl $urlObject 
+     * @param ModUrl $urlObject
      */
-    public function setUrlObject(Zikula_ModUrl $urlObject)
+    public function setUrlObject(ModUrl $urlObject)
     {
         $this->urlObject = $urlObject;
     }
