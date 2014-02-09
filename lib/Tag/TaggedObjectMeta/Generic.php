@@ -1,17 +1,19 @@
 <?php
 
 /**
- * Tag - a content-tagging module for the Zikukla Application Framework
+ * Tag - a content-tagging module for the Zikula Application Framework
  * 
  * @license MIT
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+use Zikula\Core\ModUrl;
+
 class Tag_TaggedObjectMeta_Generic extends Tag_AbstractTaggedObjectMeta
 {
 
-    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
+    function __construct($objectId, $areaId, $module, $urlString = null, ModUrl $urlObject = null)
     {
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
 
