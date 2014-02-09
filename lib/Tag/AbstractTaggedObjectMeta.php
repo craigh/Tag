@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Tag - a content-tagging module for the Zikukla Application Framework
+ * Tag - a content-tagging module for the Zikula Application Framework
  * 
  * @license MIT
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+use Zikula\Core\ModUrl;
+
 abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInterface
 {
 
@@ -42,9 +44,9 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
      * @param integer $areaId
      * @param string $module
      * @param string $urlString **deprecated**
-     * @param Zikula_ModUrl $urlObject 
+     * @param ModUrl $urlObject
      */
-    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
+    function __construct($objectId, $areaId, $module, $urlString = null, ModUrl $urlObject = null)
     {
         $this->setObjectId($objectId);
         $this->setAreaId($areaId);
@@ -107,9 +109,9 @@ abstract class Tag_AbstractTaggedObjectMeta implements Tag_TaggedObjectMetaInter
 
     /**
      * Set the object's Url Object
-     * @param Zikula_ModUrl $objectUrlObject 
+     * @param ModUrl $objectUrlObject
      */
-    public function setUrlObject(Zikula_ModUrl $objectUrlObject)
+    public function setUrlObject(ModUrl $objectUrlObject)
     {
         $this->urlObject = $objectUrlObject;
     }
