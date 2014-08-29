@@ -196,8 +196,10 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
             'module' => $module,
             'objectId' => $objectId,
             'areaId' => $areaId));
-        $this->entityManager->remove($hookObject);
-        $this->entityManager->flush();
+        if (!empty($hookObject)) {
+            $this->entityManager->remove($hookObject);
+            $this->entityManager->flush();
+        }
     }
 
     /**
