@@ -170,6 +170,8 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
 
         $tags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
 
+        $this->view->setCacheId('uiview|' . $module . '|' . $areaId . '|' . $objectId);
+
         $this->view->assign('tags', $tags);
 
         // add this response to the event stack
