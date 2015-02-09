@@ -62,6 +62,9 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $objectId = isset($hookObjectId) ? $hookObjectId : 0;
         $areaId = $hook->getAreaId();
 
+        // Load module, otherwise translation is not working in template
+        ModUtil::load('Tag');
+
         if (!empty($objectId)) {
             $selectedTags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
         } else {
@@ -140,6 +143,9 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         if (!$objectId) {
             return;
         }
+
+        // Load module, otherwise translation is not working in template
+        ModUtil::load('Tag');
 
         $tags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
 
