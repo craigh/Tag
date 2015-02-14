@@ -19,12 +19,14 @@ Tag can migrate/import crpTag data.
 Version 1.1.0
 -------------
 **__Requires Zikula Core 1.4.0+__**
+
 (in development)
 
 
 ###Version 1.0.3
 
 **__Requires Zikula Core 1.3.3+__**
+
 _14 February 2015_
 
 Maintenance release to catch user contributions to the project.
