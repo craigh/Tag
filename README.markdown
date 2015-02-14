@@ -1,16 +1,5 @@
 Tag
 ===
-
-Version 1.1.0
--------------
-(in development)
-**__Requires Zikula Core 1.4.0+__**
-
-
-Version 1.0.3
--------------
-**__Requires Zikula Core 1.3.3+__**
-
 Tag is a content tagging module for the Zikula Application Framework.
 Tag is a hook-based module that utilizes the most advanced Zikula 1.3 technology
 including Doctrine 2.1 and Form lib.
@@ -26,6 +15,19 @@ Tag provides special link decoding for use in shorturls.
 Tag provides a TagCloud block and ContentType plugin
 
 Tag can migrate/import crpTag data.
+
+Version 1.1.0
+-------------
+**__Requires Zikula Core 1.4.0+__**
+(in development)
+
+
+###Version 1.0.3
+
+**__Requires Zikula Core 1.3.3+__**
+_14 February 2015_
+
+Maintenance release to catch user contributions to the project.
 
 ###Version 1.0.2
 
