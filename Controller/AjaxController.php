@@ -7,13 +7,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\TagModule\Controller;
 
 use Zikula_View;
 use SecurityUtil;
 use Zikula_Response_Ajax_Plain;
-
 /**
  * Access to actions initiated through AJAX for the Tag module.
  */
@@ -28,13 +26,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return string Zikula_Response_Ajax_Plain with list of tags matching the criteria.
      */
-    public function gettags()
+    public function gettagsAction()
     {
         $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
         if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
-            $tags = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFragments(array($fragment));
+            $tags = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\TagEntity')->getTagsByFragments(array($fragment));
             $view->assign('tags', $tags);
         }
         $output = $view->fetch('hooks/tagautocomplete.tpl');

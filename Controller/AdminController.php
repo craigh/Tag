@@ -7,7 +7,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\TagModule\Controller;
 
 use ModUtil;
@@ -18,7 +17,6 @@ use Zikula\TagModule\Entity\TagEntity;
 use Doctrine_Core;
 use Zikula\TagModule\Entity\ObjectEntity;
 use Zikula\TagModule\FormHandler\Admin\Edit;
-
 /**
  * This is the Admin controller class providing navigation and interaction functionality.
  */
@@ -33,7 +31,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return redirect
      */
-    public function main($args)
+    public function mainAction($args)
     {
         $this->redirect(ModUtil::url('Tag', 'admin', 'view', $args));
     }
@@ -44,7 +42,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string|boolean Output.
      */
-    public function view($args)
+    public function viewAction($args)
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
         // initialize sort array - used to display sort classes and urls
@@ -78,7 +76,7 @@ class AdminController extends \Zikula_AbstractController
         }
         $this->view->assign('sort', $sort);
         $fieldmap = array('tag' => 't.tag', 'id' => 't.id', 'cnt' => 'cnt');
-        $tags = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsWithCount(0, 0, $fieldmap[$orderby], $orderdir);
+        $tags = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\TagEntity')->getTagsWithCount(0, 0, $fieldmap[$orderby], $orderdir);
         return $this->view->assign('tags', $tags)->fetch('admin/view.tpl');
     }
     /**
@@ -86,7 +84,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string|boolean Output.
      */
-    public function edit()
+    public function editAction()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
         $form = FormUtil::newForm('Tag', $this);
@@ -95,7 +93,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify the module settings
      */
-    public function modifyconfig($args)
+    public function modifyconfigAction($args)
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
         return $this->view->fetch('admin/modifyconfig.tpl');
@@ -104,7 +102,7 @@ class AdminController extends \Zikula_AbstractController
      * @desc sets module variables as requested by admin
      * @return      status/error ->back to modify config page
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());

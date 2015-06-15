@@ -7,7 +7,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\TagModule\Controller;
 
 use ModUtil;
@@ -15,7 +14,6 @@ use SecurityUtil;
 use LogUtil;
 use Zikula\TagModule\AbstractTaggedObjectMeta;
 use Zikula\TagModule\TaggedObjectMeta\GenericTaggedObjectMeta;
-
 /**
  * This is the User controller class providing navigation and interaction functionality.
  */
@@ -28,7 +26,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return redirect
      */
-    public function main($args)
+    public function mainAction($args)
     {
         $this->redirect(ModUtil::url('Tag', 'user', 'view', $args));
     }
@@ -39,17 +37,17 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string|boolean Output.
      */
-    public function view($args)
+    public function viewAction($args)
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
         $selectedTag = $this->request->getGet()->get('tag', isset($args['tag']) ? $args['tag'] : null);
         if (isset($selectedTag)) {
-            $result = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTagged($selectedTag);
+            $result = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\ObjectEntity')->getTagged($selectedTag);
             foreach ($result as $key => $item) {
                 $possibleClassNames = array(
                     "{$item['module']}_TaggedObjectMeta_{$item['module']}",
-                    'Zikula\TagModule\TaggedObjectMeta\\' . $item['module'],
-                    'Zikula\TagModule\TaggedObjectMeta\GenericTaggedObjectMeta');
+                    'Zikula\\TagModule\\TaggedObjectMeta\\' . $item['module'],
+                    'Zikula\\TagModule\\TaggedObjectMeta\\GenericTaggedObjectMeta');
                 // core 1.3.7 compatibility
                 $moduleBundle = ModUtil::getModule($item['module']);
                 if (!empty($moduleBundle)) {
@@ -67,10 +65,10 @@ class UserController extends \Zikula_AbstractController
                 $result[$key]['link'] = $objectMeta->getPresentationLink();
             }
             $this->view->assign('selectedtag', $this->entityManager
-                ->getRepository('Zikula\TagModule\Entity\TagEntity')
+                ->getRepository('Zikula\\TagModule\\Entity\\TagEntity')
                 ->findBy(array('slug' => $selectedTag)))->assign('result', $result);
         }
-        $tagsByPopularity = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFrequency();
+        $tagsByPopularity = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\TagEntity')->getTagsByFrequency();
         return $this->view->assign('tags', $tagsByPopularity)->fetch('user/view.tpl');
     }
 }
