@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -9,12 +8,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\TagModule\Controller;
+
+use Zikula_View;
+use SecurityUtil;
+use Zikula_Response_Ajax_Plain;
+
 /**
  * Access to actions initiated through AJAX for the Tag module.
  */
-class Tag_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
-
     /**
      * Performs a search based on the fragment entered so far.
      *
@@ -30,11 +34,10 @@ class Tag_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $view = Zikula_View::getInstance($this->name);
         if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
-            $tags = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFragments(array($fragment));
+            $tags = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFragments(array($fragment));
             $view->assign('tags', $tags);
         }
         $output = $view->fetch('hooks/tagautocomplete.tpl');
         return new Zikula_Response_Ajax_Plain($output);
     }
-
 }

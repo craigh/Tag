@@ -8,9 +8,14 @@
  * information regarding copyright and licensing.
  */
 
-class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
-{
+namespace Zikula\TagModule\Block;
 
+use SecurityUtil;
+use ModUtil;
+use BlockUtil;
+
+class TagCloudBlock extends \Zikula_Controller_AbstractBlock
+{
     /**
      * initialise block
      */
@@ -18,7 +23,6 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
     {
         SecurityUtil::registerPermissionSchema('Tag:tagcloud:', 'Block title::');
     }
-
     /**
      * get information on block
      */
@@ -34,13 +38,12 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
             'show_preview' => true,
             'admin_tableless' => true);
     }
-
     /**
      * display block
      */
     public function display($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Tag:tagcloud:', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('Tag:tagcloud:', "{$blockinfo['title']}::", ACCESS_OVERVIEW)) {
             return;
         }
         if (!ModUtil::available('Tag')) {
@@ -48,24 +51,24 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
         }
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         // Defaults
-        $vars['limit'] = !empty($vars['limit']) ? (int)$vars['limit'] : 10;
-        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency($vars['limit']);
+        $vars['limit'] = !empty($vars['limit']) ? (int) $vars['limit'] : 10;
+        $tagsByPopularity = $this->entityManager
+            ->getRepository('Zikula\TagModule\Entity\TagEntity')
+            ->getTagsByFrequency($vars['limit']);
         $this->view->assign('tags', $tagsByPopularity);
         $blockinfo['content'] = $this->view->fetch('blocks/tagcloud.tpl');
         return BlockUtil::themeBlock($blockinfo);
     }
-
     /**
      * modify block settings
      */
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-        $vars['limit'] = !empty($vars['limit']) ? (int)$vars['limit'] : 10;
+        $vars['limit'] = !empty($vars['limit']) ? (int) $vars['limit'] : 10;
         $this->view->assign('vars', $vars);
         return $this->view->fetch('blocks/tagcloud_modify.tpl');
     }
-
     /**
      * update block settings
      */
@@ -77,5 +80,4 @@ class Tag_Block_TagCloud extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache('blocks/tagcloud.tpl');
         return $blockinfo;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -8,27 +7,35 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
-{
 
+namespace Zikula\TagModule;
+
+use Zikula_View;
+use ServiceUtil;
+use SecurityUtil;
+use ModUtil;
+use Zikula_Response_DisplayHook;
+use Zikula_Hook_ValidationResponse;
+use ZLanguage;
+use LogUtil;
+
+class HookHandlers extends \Zikula_Hook_AbstractHandler
+{
     /**
      * Zikula_View instance
      * @var object
      */
     private $view;
-
     /**
      * Zikula Service Doctrine EntityManager instance
      * @var object
      */
     private $entityManager;
-
     /**
      * Zikula Request instance
      * @var object
      */
     private $request;
-
     /**
      * Post constructor hook.
      *
@@ -36,22 +43,21 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
      */
     public function setup()
     {
-        $this->view = Zikula_View::getInstance("Tag");
+        $this->view = Zikula_View::getInstance('Tag');
         $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
         $this->request = ServiceUtil::getService('request');
         // hooks do not autoload the bootstrap for the module
         $helper = ServiceUtil::getService('doctrine_extensions');
         $helper->getListener('sluggable');
     }
-
     /**
      * Display hook for edit views.
      *
-     * @param Zikula_DisplayHook $hook
+     * @param \Zikula_DisplayHook $hook
      *
      * @return void
      */
-    public function uiEdit(Zikula_DisplayHook $hook)
+    public function uiEdit(\Zikula_DisplayHook $hook)
     {
         // Security check
         if (!SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD)) {
@@ -61,75 +67,59 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $hookObjectId = $hook->getId();
         $objectId = isset($hookObjectId) ? $hookObjectId : 0;
         $areaId = $hook->getAreaId();
-
         // Load module, otherwise translation is not working in template
         ModUtil::load('Tag');
-
         if (!empty($objectId)) {
-            $selectedTags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
+            $selectedTags = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($module, $areaId, $objectId);
         } else {
             $selectedTags = array();
         }
         $this->view->assign('selectedTags', $selectedTags);
-
-        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
+        $tagsByPopularity = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
         $this->view->assign('tagsByPopularity', $tagsByPopularity);
-
         // add this response to the event stack
         $area = 'provider.tag.ui_hooks.service';
         $hook->setResponse(new Zikula_Response_DisplayHook($area, $this->view, 'hooks/edit.tpl'));
     }
-
     /**
      * validation handler for validate_edit hook type.
      *
-     * @param Zikula_ValidationHook $hook
+     * @param \Zikula_ValidationHook $hook
      *
      * @return void
      */
-    public function validateEdit(Zikula_ValidationHook $hook)
+    public function validateEdit(\Zikula_ValidationHook $hook)
     {
         // get data from post
         $data = $this->request->getPost()->get('tag', null);
-
         // create a new hook validation object and assign it to $this->validation
         $this->validation = new Zikula_Hook_ValidationResponse('data', $data);
-
         $hook->setValidator('provider.tag.ui_hooks.service', $this->validation);
     }
-
     /**
      * process edit hook handler.
      *
-     * @param Zikula_ProcessHook $hook
+     * @param \Zikula_ProcessHook $hook
      *
      * @return void
      */
-    public function processEdit(Zikula_ProcessHook $hook)
+    public function processEdit(\Zikula_ProcessHook $hook)
     {
         // check for validation here
         if (!$this->validation) {
             return;
         }
-
-        $args = array(
-            'module' => $hook->getCaller(),
-            'objectId' => $hook->getId(),
-            'areaId' => $hook->getAreaId(),
-            'objUrl' => $hook->getUrl(),
-            'hookdata' => $this->validation->getObject(),
-        );
+        $args = array('module' => $hook->getCaller(), 'objectId' => $hook->getId(), 'areaId' => $hook->getAreaId(), 'objUrl' => $hook->getUrl(), 'hookdata' => $this->validation->getObject());
         ModUtil::apiFunc('Tag', 'user', 'tagObject', $args);
     }
-
     /**
      * Display hook for view.
      *
-     * @param Zikula_DisplayHook $hook
+     * @param \Zikula_DisplayHook $hook
      *
      * @return void
      */
-    public function uiView(Zikula_DisplayHook $hook)
+    public function uiView(\Zikula_DisplayHook $hook)
     {
         // Security check
         if (!SecurityUtil::checkPermission('Tag::', '::', ACCESS_READ)) {
@@ -139,64 +129,49 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
         $module = $hook->getCaller();
         $objectId = $hook->getId();
         $areaId = $hook->getAreaId();
-
         if (!$objectId) {
             return;
         }
-
         // Load module, otherwise translation is not working in template
         ModUtil::load('Tag');
-
-        $tags = $this->entityManager->getRepository('Tag_Entity_Object')->getTags($module, $areaId, $objectId);
-
+        $tags = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($module, $areaId, $objectId);
         $this->view->setCacheId('uiview|' . $module . '|' . $areaId . '|' . $objectId);
-
         $this->view->assign('tags', $tags);
-
         // add this response to the event stack
         $area = 'provider.tag.ui_hooks.service';
         $hook->setResponse(new Zikula_Response_DisplayHook($area, $this->view, 'hooks/view.tpl'));
     }
-
     /**
      * delete process hook handler.
      *
-     * @param Zikula_ProcessHook $event
+     * @param \Zikula_ProcessHook $event
      *
      * @return void
      */
-    public function processDelete(Zikula_ProcessHook $hook)
+    public function processDelete(\Zikula_ProcessHook $hook)
     {
         $module = $hook->getCaller();
         $objectId = $hook->getId();
         $areaId = $hook->getAreaId();
-
-        $hookObject = $this->entityManager
-                ->getRepository('Tag_Entity_Object')
-                ->findOneBy(array(
-            'module' => $module,
-            'objectId' => $objectId,
-            'areaId' => $areaId));
+        $hookObject = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->findOneBy(array('module' => $module, 'objectId' => $objectId, 'areaId' => $areaId));
         if (!empty($hookObject)) {
             $this->entityManager->remove($hookObject);
             $this->entityManager->flush();
         }
     }
-
     /**
      * Handle module uninstall event "installer.module.uninstalled".
      * Receives $modinfo as $args
      *
-     * @param Zikula_Event $event
+     * @param \Zikula_Event $event
      *
      * @return void
      */
-    public static function moduleDelete(Zikula_Event $event)
+    public static function moduleDelete(\Zikula_Event $event)
     {
         $module = $event['name'];
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        $hookObjects = $em->getRepository('Tag_Entity_Object')
-                ->findBy(array('module' => $module));
+        $hookObjects = $em->getRepository('Zikula\TagModule\Entity\ObjectEntity')->findBy(array('module' => $module));
         // better to do it this way than DQL because removes related objects also
         if (count($hookObjects) > 0) {
             foreach ($hookObjects as $hookObject) {
@@ -206,21 +181,19 @@ class Tag_HookHandlers extends Zikula_Hook_AbstractHandler
             LogUtil::registerStatus(__('Hooked content in Tags removed.', ZLanguage::getModuleDomain('Tag')));
         }
     }
-
     /**
      * Handle hook uninstall event "installer.subscriberarea.uninstalled".
      * Receives $areaId in $args
      *
-     * @param Zikula_Event $event
+     * @param \Zikula_Event $event
      *
      * @return void
      */
-    public static function moduleDeleteByArea(Zikula_Event $event)
+    public static function moduleDeleteByArea(\Zikula_Event $event)
     {
         $areaId = $event['areaid'];
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        $hookObjects = $em->getRepository('Tag_Entity_Object')
-                ->findBy(array('areaId' => $areaId));
+        $hookObjects = $em->getRepository('Zikula\TagModule\Entity\ObjectEntity')->findBy(array('areaId' => $areaId));
         // better to do it this way than DQL because removes related objects also
         if (count($hookObjects) > 0) {
             foreach ($hookObjects as $hookObject) {

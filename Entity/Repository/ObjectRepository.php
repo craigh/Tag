@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -8,15 +7,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\TagModule\Entity\Repository;
+
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Repository class for DQL calls
- *
- */
-class Tag_Entity_Repository_ObjectRepository extends EntityRepository
+class ObjectRepository extends EntityRepository
 {
-
     /**
      * get all associated tags for an object
      * 
@@ -27,16 +24,10 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
      */
     public function getTags($module, $areaId, $objectId)
     {
-        $dql = "SELECT t.tag, t.slug FROM Tag_Entity_Object o JOIN o.tags t" .
-                " WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3";
-
+        $dql = 'SELECT t.tag, t.slug FROM Zikula\TagModule\Entity\ObjectEntity o JOIN o.tags t' . ' WHERE o.module = ?1 AND o.areaId = ?2 AND o.objectId = ?3';
         $query = $this->_em->createQuery($dql);
-        return $query->setParameter(1, $module)
-                        ->setParameter(2, $areaId)
-                        ->setParameter(3, $objectId)
-                        ->getArrayResult(); // hydrate result to array
+        return $query->setParameter(1, $module)->setParameter(2, $areaId)->setParameter(3, $objectId)->getArrayResult();
     }
-
     /**
      * get all objects tagged as specified from provided slug
      * 
@@ -45,12 +36,8 @@ class Tag_Entity_Repository_ObjectRepository extends EntityRepository
      */
     public function getTagged($tag)
     {
-        $dql = "SELECT o FROM Tag_Entity_Object o JOIN o.tags t" .
-                " WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC";
-
+        $dql = 'SELECT o FROM Zikula\TagModule\Entity\ObjectEntity o JOIN o.tags t' . ' WHERE t.slug = ?1 ORDER BY o.module ASC, o.objectId DESC';
         $query = $this->_em->createQuery($dql);
-        return $query->setParameter(1, $tag)
-                        ->getArrayResult(); // hydrate result to array
+        return $query->setParameter(1, $tag)->getArrayResult();
     }
-
 }

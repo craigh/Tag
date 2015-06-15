@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -8,23 +7,24 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Zikula\Core\ModUrl;
 
-//use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
+namespace Zikula\TagModule\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\ModUrl;
+use Zikula\TagModule\Entity\TagEntity;
 
 /**
  * Tagged object entity class.
  *
  * Annotations define the entity mappings to database.
  *
- * @ORM\Entity(repositoryClass="Tag_Entity_Repository_ObjectRepository")
+ * @ORM\Entity(repositoryClass="Zikula\TagModule\Entity\Repository\ObjectRepository")
  * @ORM\Table(name="tag_object")
  */
-class Tag_Entity_Object extends Zikula_EntityAccess
+class ObjectEntity extends \Zikula_EntityAccess
 {
-
     /**
      * id field (record id)
      *
@@ -33,35 +33,30 @@ class Tag_Entity_Object extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * tags
      *
-     * @ORM\ManyToMany(targetEntity="Tag_Entity_Tag")
+     * @ORM\ManyToMany(targetEntity="Zikula\TagModule\Entity\TagEntity")
      */
     private $tags = null;
-
     /**
      * module field (hooked module name)
      *
      * @ORM\Column(length=50)
      */
     private $module;
-
     /**
      * areaId field (hooked area id)
      *
      * @ORM\Column(type="integer")
      */
     private $areaId;
-
     /**
      * objectId field (object id)
      *
      * @ORM\Column(type="integer")
      */
     private $objectId;
-
     /**
      * url field (object url)
      * @var string
@@ -71,7 +66,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
      * @ORM\Column(nullable=true)
      */
     private $url = null;
-
     /**
      * url object
      * @var ModUrl
@@ -79,7 +73,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
      * @ORM\Column(type="object", nullable=true)
      */
     private $urlObject = null;
-
     public function __construct($module, $objectId, $areaId, ModUrl $urlObject)
     {
         $this->tags = new ArrayCollection();
@@ -87,10 +80,8 @@ class Tag_Entity_Object extends Zikula_EntityAccess
         $this->setObjectId($objectId);
         $this->setAreaId($areaId);
         $this->setUrlObject($urlObject);
-        $this->setUrl($urlObject->getUrl(null, null, false, false)); // deprecated
-        // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
+        $this->setUrl($urlObject->getUrl(null, null, false, false));
     }
-
     /**
      * get the record ID
      * @return integer
@@ -99,7 +90,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->id;
     }
-
     /**
      * get the Tags
      * @return ArrayCollection 
@@ -108,16 +98,14 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->tags;
     }
-
     /**
      * Assign Tag to ArrayCollection
-     * @param Tag_Entity_Tag $tag 
+     * @param TagEntity $tag
      */
-    public function assignToTags(Tag_Entity_Tag $tag)
+    public function assignToTags(TagEntity $tag)
     {
         $this->tags[] = $tag;
     }
-
     /**
      * get the module name
      * @return string
@@ -126,7 +114,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->module;
     }
-
     /**
      * set the module name
      * @param string $module 
@@ -135,7 +122,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->module = $module;
     }
-
     /**
      * get the Hook Area ID
      * @return integer
@@ -144,7 +130,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->areaId;
     }
-
     /**
      * Set the Hook Area ID
      * @param integer $areaId 
@@ -153,7 +138,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->areaId = $areaId;
     }
-
     /**
      * Get the hooked object ID
      * @return integer
@@ -162,7 +146,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->objectId;
     }
-
     /**
      * Set the hooked object ID
      * @param integer $objectId 
@@ -171,7 +154,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->objectId = $objectId;
     }
-
     /**
      * @deprecated since Tag version 1.0.2
      * @return string 
@@ -180,7 +162,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->url;
     }
-
     /**
      * @deprecated since Tag version 1.0.2
      * @param string $url
@@ -189,7 +170,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->url = $url;
     }
-
     /**
      * get the hooked object UrlObject
      * @return ModUrl
@@ -198,7 +178,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         return $this->urlObject;
     }
-
     /**
      * set the hooked object UrlObject
      * @param ModUrl $urlObject
@@ -207,7 +186,6 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->urlObject = $urlObject;
     }
-
     /**
      * remove the tags in this object 
      */
@@ -215,5 +193,4 @@ class Tag_Entity_Object extends Zikula_EntityAccess
     {
         $this->tags = null;
     }
-
 }

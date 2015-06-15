@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -8,21 +7,22 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\TagModule\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo; // Add behaviors
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Tags entity class.
  *
  * Annotations define the entity mappings to database.
  *
- * @ORM\Entity(repositoryClass="Tag_Entity_Repository_TagRepository")
+ * @ORM\Entity(repositoryClass="Zikula\TagModule\Entity\Repository\TagRepository")
  * @ORM\Table(name="tag_tag")
  */
-
-class Tag_Entity_Tag extends Zikula_EntityAccess
+class TagEntity extends \Zikula_EntityAccess
 {
-
     /**
      * id field
      *
@@ -31,14 +31,12 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * tag field (the 'word')
      *
      * @ORM\Column(length=36)
      */
     private $tag;
-
     /**
      * slug
      * 
@@ -46,7 +44,6 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
      * @Gedmo\Slug(fields={"tag"})
      */
     private $slug;
-
     /**
      * Set the Tag
      * @param string $tag 
@@ -55,7 +52,6 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     {
         $this->tag = $tag;
     }
-
     /**
      * retieve the tag
      * @return string
@@ -64,7 +60,6 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     {
         return $this->tag;
     }
-
     /**
      * retrieve the record ID
      * @return integer 
@@ -73,7 +68,6 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     {
         return $this->id;
     }
-
     /**
      * retrieve the slug
      * @return string
@@ -82,5 +76,4 @@ class Tag_Entity_Tag extends Zikula_EntityAccess
     {
         return $this->slug;
     }
-
 }

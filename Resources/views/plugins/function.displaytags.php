@@ -32,7 +32,7 @@ function smarty_function_displaytags($params, &$smarty)
     $areaId = $area['id'];
     if (ModUtil::available('Tag')) {
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        $tags = $em->getRepository('Tag_Entity_Object')->getTags($modname, $areaId, $objectid);
+        $tags = $em->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($modname, $areaId, $objectid);
         $smarty->assign('tags', $tags);
         $display = $smarty->fetch('file:modules/Tag/templates/hooks/view.tpl');
         if ($assign) {

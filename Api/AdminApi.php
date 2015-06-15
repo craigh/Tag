@@ -8,12 +8,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\TagModule\Api;
+
+use SecurityUtil;
+use ModUtil;
+
 /**
  * Class to control Admin Api
  */
-class Tag_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Get available admin panel links
      *
@@ -23,21 +27,18 @@ class Tag_Api_Admin extends Zikula_AbstractApi
     {
         // Define an empty array to hold the list of admin links
         $links = array();
-
         if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
             $links[] = array(
                 'url' => ModUtil::url('Tag', 'admin', 'modifyconfig'),
                 'text' => $this->__('Settings'),
                 'class' => 'z-icon-es-config');
         }
-
         if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
             $links[] = array(
                 'url' => ModUtil::url('Tag', 'admin', 'view'),
                 'text' => $this->__('Tag List'),
                 'class' => 'z-icon-es-view');
         }
-
         if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
             $links[] = array(
                 'url' => ModUtil::url('Tag', 'admin', 'edit'),
@@ -45,14 +46,6 @@ class Tag_Api_Admin extends Zikula_AbstractApi
                 'class' => 'z-icon-es-new');
         }
 
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => ModUtil::url('Tag', 'admin', 'migrateCrpTag'),
-                'text' => $this->__('Migrate crpTag'),
-                'class' => 'z-icon-es-regenerate');
-        }
-
         return $links;
     }
-
 }

@@ -8,12 +8,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\TagModule\Api;
+
+use LogUtil;
+use System;
+use DataUtil;
+use Zikula\TagModule\Entity\ObjectEntity;
+use Zikula\TagModule\Entity\TagEntity;
+
 /**
  * Class to control User Api
  */
-class Tag_Api_User extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
-
     /**
      * decode the shorturl
      */
@@ -22,17 +29,13 @@ class Tag_Api_User extends Zikula_AbstractApi
         if (!isset($args['vars'])) {
             return LogUtil::registerArgsError();
         }
-
         System::queryStringSetVar('type', 'user');
         System::queryStringSetVar('func', 'view');
-        
         if (isset($args['vars'][2])) {
             System::queryStringSetVar('tag', $args['vars'][2]);
         }
-
         return true;
     }
-
     /**
      * encode the shorturl
      */
@@ -41,13 +44,10 @@ class Tag_Api_User extends Zikula_AbstractApi
         if (!isset($args['modname'])) {
             return LogUtil::registerArgsError();
         }
-
         $url = $args['modname'];
         $url .= isset($args['args']['tag']) ? '/' . $args['args']['tag'] . '/' : '';
-
         return $url;
     }
-
     /**
      * Set the tags for an object
      *
@@ -55,7 +55,7 @@ class Tag_Api_User extends Zikula_AbstractApi
      *      @type string        $module the module name
      *      @type integer       $objectId the id of the object being tagged
      *      @type integer       $areaId the areaId
-     *      @type Zikula_ModUrl $objUrl
+     *      @type ModUrl $objUrl
      *      @type array         $hookdata
      * }
      */
@@ -66,28 +66,24 @@ class Tag_Api_User extends Zikula_AbstractApi
         $areaId = $args['areaId'];
         $objUrl = $args['objUrl'];
         $hookdata = $args['hookdata'];
-
         $hookdata = DataUtil::cleanVar($hookdata);
         $tagArray = $this->cleanTagArray($hookdata['tags']);
-
         if (count($tagArray) > 0) {
             // search for existing object
             $hookObject = $this->entityManager
-                ->getRepository('Tag_Entity_Object')
-                ->findOneBy(array(
-                    'module' => $module,
-                    'objectId' => $objectId,
-                    'areaId' => $areaId));
+                ->getRepository('Zikula\TagModule\Entity\ObjectEntity')
+                ->findOneBy(array('module' => $module, 'objectId' => $objectId, 'areaId' => $areaId));
             if (isset($hookObject)) {
                 $hookObject->clearTags();
             } else {
-                $hookObject = new Tag_Entity_Object($module, $objectId, $areaId, $objUrl);
+                $hookObject = new ObjectEntity($module, $objectId, $areaId, $objUrl);
             }
-
             foreach ($tagArray as $word) {
-                $tagObject = $this->entityManager->getRepository('Tag_Entity_Tag')->findOneBy(array('tag' => $word));
+                $tagObject = $this->entityManager
+                    ->getRepository('Zikula\TagModule\Entity\TagEntity')
+                    ->findOneBy(array('tag' => $word));
                 if (!isset($tagObject)) {
-                    $tagObject = new Tag_Entity_Tag();
+                    $tagObject = new TagEntity();
                     $tagObject->setTag($word);
                     $this->entityManager->persist($tagObject);
                 }
@@ -97,7 +93,6 @@ class Tag_Api_User extends Zikula_AbstractApi
             $this->entityManager->flush();
         }
     }
-
     /**
      * clean up words in array values
      *
@@ -118,5 +113,4 @@ class Tag_Api_User extends Zikula_AbstractApi
         }
         return $final;
     }
-
 }

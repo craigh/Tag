@@ -8,18 +8,25 @@
  * information regarding copyright and licensing.
  */
 
-class Tag_Api_Search extends Zikula_AbstractApi
-{
+namespace Zikula\TagModule\Api;
 
+use SecurityUtil;
+use Zikula_View;
+use ModUtil;
+use DataUtil;
+use Search_Api_User;
+use DBUtil;
+use LogUtil;
+
+class SearchApi extends \Zikula_AbstractApi
+{
     /**
      * Search plugin info
      */
     public function info()
     {
-        return array('title' => 'Tag',
-            'functions' => array('tag' => 'search'));
+        return array('title' => 'Tag', 'functions' => array('tag' => 'search'));
     }
-
     /**
      * Search form component
      */
@@ -30,41 +37,33 @@ class Tag_Api_Search extends Zikula_AbstractApi
             $render->assign('active', !isset($args['active']) || isset($args['active']['Tag']));
             return $render->fetch('search/options.tpl');
         }
-
         return '';
     }
-
     /**
      * Search plugin main function
      */
     public function search($args)
     {
         ModUtil::dbInfoLoad('Search');
-
         $sessionId = session_id();
-        
         $searchFragments = Search_Api_User::split_query(DataUtil::formatForStore($args['q']), false);
-
         // this is an 'eager' search - it doesn't compensate for search type indicated in search UI
-        $results = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFragments($searchFragments);
-
+        $results = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFragments($searchFragments);
         foreach ($results as $result) {
             $record = array(
                 'title' => $result->getTag(),
                 'text' => '',
-                'extra' => serialize(array('tag' => $result->getTag(), 'slug' => $result->getSlug())),
+                'extra' => serialize(array(
+                    'tag' => $result->getTag(),
+                    'slug' => $result->getSlug())),
                 'module' => 'Tag',
-                'session' => $sessionId
-            );
-
+                'session' => $sessionId);
             if (!DBUtil::insertObject($record, 'search_result')) {
                 return LogUtil::registerError($this->__('Error! Could not save the search results.'));
             }
         }
-
         return true;
     }
-
     /**
      * Do last minute access checking and assign URL to items
      *
@@ -73,10 +72,9 @@ class Tag_Api_Search extends Zikula_AbstractApi
      */
     public function search_check($args)
     {
-        $datarow = &$args['datarow'];
+        $datarow =& $args['datarow'];
         $extra = unserialize($datarow['extra']);
         $datarow['url'] = ModUtil::url('Tag', 'user', 'view', array('tag' => $extra['slug']));
         return true;
     }
-
 }

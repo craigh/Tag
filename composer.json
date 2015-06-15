@@ -1,15 +1,24 @@
 {
-    "name": "craigh/tag",
-    "description": "Tag is a content tagging module for the Zikula Application Framework.",
+    "name": "zikula/tag-module",
+    "description": "Change me description Module",
     "type": "zikula-module",
-    "license": "MIT",
+    "license": "LGPL-3.0+",
     "authors": [
         {
-            "name": "Craig Heydenburg",
-            "role": "owner"
+            "name": "Your name",
+            "homepage": "http://example.com/",
+            "email": "example@example.com"
         }
     ],
+    "autoload": {
+        "psr-4": { "Zikula\\TagModule\\": "" }
+    },
     "require": {
         "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\TagModule\\ZikulaTagModule"
+        }
     }
 }

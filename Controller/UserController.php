@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
  * 
@@ -9,12 +8,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\TagModule\Controller;
+
+use ModUtil;
+use SecurityUtil;
+use LogUtil;
+use Zikula\TagModule\AbstractTaggedObjectMeta;
+use Zikula\TagModule\TaggedObjectMeta\GenericTaggedObjectMeta;
+
 /**
  * This is the User controller class providing navigation and interaction functionality.
  */
-class Tag_Controller_User extends Zikula_AbstractController
+class UserController extends \Zikula_AbstractController
 {
-
     /**
      * This method is the default function.
      *
@@ -26,7 +32,6 @@ class Tag_Controller_User extends Zikula_AbstractController
     {
         $this->redirect(ModUtil::url('Tag', 'user', 'view', $args));
     }
-
     /**
      * This method provides a generic item list overview.
      *
@@ -37,21 +42,18 @@ class Tag_Controller_User extends Zikula_AbstractController
     public function view($args)
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
-
         $selectedTag = $this->request->getGet()->get('tag', isset($args['tag']) ? $args['tag'] : null);
-
         if (isset($selectedTag)) {
-            $result = $this->entityManager->getRepository('Tag_Entity_Object')->getTagged($selectedTag);
+            $result = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTagged($selectedTag);
             foreach ($result as $key => $item) {
                 $possibleClassNames = array(
-                    "$item[module]_TaggedObjectMeta_$item[module]",
-                    "Tag_TaggedObjectMeta_$item[module]",
-                    "Tag_TaggedObjectMeta_Generic",
-                );
+                    "{$item['module']}_TaggedObjectMeta_{$item['module']}",
+                    'Zikula\TagModule\TaggedObjectMeta\\' . $item['module'],
+                    'Zikula\TagModule\TaggedObjectMeta\GenericTaggedObjectMeta');
                 // core 1.3.7 compatibility
                 $moduleBundle = ModUtil::getModule($item['module']);
                 if (!empty($moduleBundle)) {
-                    array_unshift($possibleClassNames, $moduleBundle->getNamespace() . '\TaggedObjectMeta\\' . $moduleBundle->getName());
+                    array_unshift($possibleClassNames, $moduleBundle->getNamespace() . '\\TaggedObjectMeta\\' . $moduleBundle->getName());
                 }
                 foreach ($possibleClassNames as $classname) {
                     if (class_exists($classname)) {
@@ -59,19 +61,16 @@ class Tag_Controller_User extends Zikula_AbstractController
                     }
                 }
                 $objectMeta = new $classname($item['objectId'], $item['areaId'], $item['module'], $item['url'], $item['urlObject']);
-                if (!($objectMeta instanceof Tag_AbstractTaggedObjectMeta)) {
-                    $objectMeta = new Tag_TaggedObjectMeta_Generic($item['objectId'], $item['areaId'], $item['module'], $item['url'], $item['urlObject']);
+                if (!$objectMeta instanceof AbstractTaggedObjectMeta) {
+                    $objectMeta = new GenericTaggedObjectMeta($item['objectId'], $item['areaId'], $item['module'], $item['url'], $item['urlObject']);
                 }
                 $result[$key]['link'] = $objectMeta->getPresentationLink();
             }
-            $this->view->assign('selectedtag', $this->entityManager->getRepository('Tag_Entity_Tag')->findBy(array('slug' => $selectedTag)))
-                    ->assign('result', $result);
+            $this->view->assign('selectedtag', $this->entityManager
+                ->getRepository('Zikula\TagModule\Entity\TagEntity')
+                ->findBy(array('slug' => $selectedTag)))->assign('result', $result);
         }
-
-        $tagsByPopularity = $this->entityManager->getRepository('Tag_Entity_Tag')->getTagsByFrequency();
-
-        return $this->view->assign('tags', $tagsByPopularity)
-                        ->fetch('user/view.tpl');
+        $tagsByPopularity = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFrequency();
+        return $this->view->assign('tags', $tagsByPopularity)->fetch('user/view.tpl');
     }
-
 }
