@@ -20,7 +20,7 @@ class ObjectRepository extends EntityRepository
      * @param string $module
      * @param integer $areaId
      * @param integer $objectId
-     * @return Object Zikula_EntityAccess 
+     * @return \Zikula_EntityAccess
      */
     public function getTags($module, $areaId, $objectId)
     {
@@ -32,7 +32,7 @@ class ObjectRepository extends EntityRepository
      * get all objects tagged as specified from provided slug
      * 
      * @param string $tag
-     * @return Object Zikula_EntityAccess
+     * @return \Zikula_EntityAccess
      */
     public function getTagged($tag)
     {

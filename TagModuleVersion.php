@@ -39,7 +39,7 @@ class TagModuleVersion extends \Zikula_AbstractVersion
     }
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'provider.tag.ui_hooks.service', 'ui_hooks', $this->__('Content tagging service'));
+        $bundle = new \Zikula_HookManager_ProviderBundle($this->name, 'provider.tag.ui_hooks.service', 'ui_hooks', $this->__('Content tagging service'));
         $bundle->addServiceHandler('display_view', '\Zikula\TagModule\HookHandlers', 'uiView', 'tag.service');
         $bundle->addServiceHandler('form_edit', '\Zikula\TagModule\HookHandlers', 'uiEdit', 'tag.service');
         $bundle->addServiceHandler('validate_edit', '\Zikula\TagModule\HookHandlers', 'validateEdit', 'tag.service');

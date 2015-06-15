@@ -118,7 +118,7 @@ class TagRepository extends ORM\EntityRepository
      * get an array of tags in random order
      * 
      * @param integer $limit
-     * @return  Object Zikula_EntityAccess
+     * @return \Zikula_EntityAccess
      */
     public function getTagsByRandom($limit = 0)
     {
@@ -137,7 +137,7 @@ class TagRepository extends ORM\EntityRepository
      * @param integer $offset
      * @param string $orderBy
      * @param string $sortDir
-     * @return Object Zikula_EntityAccess 
+     * @return \Zikula_EntityAccess
      */
     public function getTagsWithCount($limit = 0, $offset = 0, $orderBy = 't.tag', $sortDir = 'ASC')
     {

@@ -24,18 +24,18 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * ---------------------------
      * string fragment A partial tag name entered by the user.
      *
-     * @return string Zikula_Response_Ajax_Plain with list of tags matching the criteria.
+     * @return \Zikula_Response_Ajax_Plain with list of tags matching the criteria.
      */
     public function gettagsAction()
     {
         $this->checkAjaxToken();
-        $view = Zikula_View::getInstance($this->name);
+        $view = \Zikula_View::getInstance($this->name);
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
             $tags = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\TagEntity')->getTagsByFragments(array($fragment));
             $view->assign('tags', $tags);
         }
         $output = $view->fetch('hooks/tagautocomplete.tpl');
-        return new Zikula_Response_Ajax_Plain($output);
+        return new \Zikula_Response_Ajax_Plain($output);
     }
 }

@@ -43,7 +43,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
      */
     public function setup()
     {
-        $this->view = Zikula_View::getInstance('ZikulaTagModule');
+        $this->view = \Zikula_View::getInstance('ZikulaTagModule');
         $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
         $this->request = ServiceUtil::getService('request');
         // hooks do not autoload the bootstrap for the module
@@ -139,7 +139,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
         $this->view->assign('tags', $tags);
         // add this response to the event stack
         $area = 'provider.tag.ui_hooks.service';
-        $hook->setResponse(new Zikula_Response_DisplayHook($area, $this->view, 'hooks/view.tpl'));
+        $hook->setResponse(new \Zikula_Response_DisplayHook($area, $this->view, 'hooks/view.tpl'));
     }
     /**
      * delete process hook handler.

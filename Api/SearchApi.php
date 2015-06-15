@@ -33,7 +33,7 @@ class SearchApi extends \Zikula_AbstractApi
     public function options($args)
     {
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $render = Zikula_View::getInstance($this->name);
+            $render = \Zikula_View::getInstance($this->name);
             $render->assign('active', !isset($args['active']) || isset($args['active'][$this->name]));
             return $render->fetch('search/options.tpl');
         }
