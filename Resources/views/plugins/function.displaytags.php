@@ -30,7 +30,7 @@ function smarty_function_displaytags($params, &$smarty)
 
     $area = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')->findOneBy('areaname', $areaname)->toArray();
     $areaId = $area['id'];
-    if (ModUtil::available('Tag')) {
+    if (ModUtil::available('ZikulaTagModule')) {
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $tags = $em->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($modname, $areaId, $objectid);
         $smarty->assign('tags', $tags);

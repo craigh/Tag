@@ -1,5 +1,5 @@
-{ajaxheader modname='Tag' filename='tag.js' ui=true}
-{pageaddvar name='stylesheet' value='modules/Tag/style/style.css'}
+{ajaxheader modname= filename='tag.js' ui=true}
+{*{pageaddvar name='stylesheet' value='modules/Tag/style/style.css'}*}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

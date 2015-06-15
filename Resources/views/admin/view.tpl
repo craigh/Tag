@@ -1,4 +1,4 @@
-{ajaxheader modname='Tag' ui=true}
+{ajaxheader modname=$module ui=true}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -32,8 +32,8 @@
                 <td>{$tag.0->getSlug()|safetext}</td>
                 <td>{$tag.cnt|safetext}</td>
                 <td>
-                    <a href="{modurl modname="Tag" type="user" func="view" tag=$tag.0->getSlug()}">{img modname='core' set='icons/extrasmall' src='14_layer_visible.png' __title='View' __alt='View' class='tooltips'}</a>
-                    <a href="{modurl modname="Tag" type="admin" func="edit" id=$tag.0->getId()}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>
+                    <a href="{modurl modname=$module type="user" func="view" tag=$tag.0->getSlug()}">{img modname='core' set='icons/extrasmall' src='14_layer_visible.png' __title='View' __alt='View' class='tooltips'}</a>
+                    <a href="{modurl modname=$module type="admin" func="edit" id=$tag.0->getId()}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>
                 </td>
             </tr>
         {foreachelse}
