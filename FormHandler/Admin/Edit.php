@@ -52,10 +52,10 @@ class Edit extends \Zikula_Form_AbstractHandler
             }
         }
         if (!$view->getStateData('returnurl')) {
-            $editurl = ModUtil::url('Tag', 'admin', 'edit');
+            $editurl = ModUtil::url($this->name, 'admin', 'edit');
             $returnurl = System::serverGetVar('HTTP_REFERER');
             if (strpos($returnurl, $editurl) === 0) {
-                $returnurl = ModUtil::url('Tag', 'admin', 'main');
+                $returnurl = ModUtil::url($this->name, 'admin', 'main');
             }
             $view->setStateData('returnurl', $returnurl);
         }
@@ -98,6 +98,6 @@ class Edit extends \Zikula_Form_AbstractHandler
         $tag->merge($data);
         $this->entityManager->persist($tag);
         $this->entityManager->flush();
-        return $view->redirect(ModUtil::url('Tag', 'admin', 'view'));
+        return $view->redirect(ModUtil::url($this->name, 'admin', 'view'));
     }
 }

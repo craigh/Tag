@@ -29,7 +29,7 @@ class Handlers
      */
     public static function registerPluginDir(\Zikula_Event $event)
     {
-        $modinfo = ModUtil::getInfoFromName('Tag');
+        $modinfo = ModUtil::getInfoFromName('ZikulaTagModule');
         if (!$modinfo) {
             return;
         }

@@ -43,7 +43,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
      */
     public function setup()
     {
-        $this->view = Zikula_View::getInstance('Tag');
+        $this->view = Zikula_View::getInstance('ZikulaTagModule');
         $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
         $this->request = ServiceUtil::getService('request');
         // hooks do not autoload the bootstrap for the module
@@ -60,7 +60,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
     public function uiEdit(\Zikula_DisplayHook $hook)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaTagModule::', '::', ACCESS_ADD)) {
             return;
         }
         $module = $hook->getCaller();
@@ -68,14 +68,14 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
         $objectId = isset($hookObjectId) ? $hookObjectId : 0;
         $areaId = $hook->getAreaId();
         // Load module, otherwise translation is not working in template
-        ModUtil::load('Tag');
+        ModUtil::load('ZikulaTagModule');
         if (!empty($objectId)) {
             $selectedTags = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($module, $areaId, $objectId);
         } else {
             $selectedTags = array();
         }
         $this->view->assign('selectedTags', $selectedTags);
-        $tagsByPopularity = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFrequency(ModUtil::getVar('Tag', 'poptagsoneditform', null));
+        $tagsByPopularity = $this->entityManager->getRepository('Zikula\TagModule\Entity\TagEntity')->getTagsByFrequency(ModUtil::getVar('ZikulaTagModule', 'poptagsoneditform', null));
         $this->view->assign('tagsByPopularity', $tagsByPopularity);
         // add this response to the event stack
         $area = 'provider.tag.ui_hooks.service';
@@ -110,7 +110,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
             return;
         }
         $args = array('module' => $hook->getCaller(), 'objectId' => $hook->getId(), 'areaId' => $hook->getAreaId(), 'objUrl' => $hook->getUrl(), 'hookdata' => $this->validation->getObject());
-        ModUtil::apiFunc('Tag', 'user', 'tagObject', $args);
+        ModUtil::apiFunc('ZikulaTagModule', 'user', 'tagObject', $args);
     }
     /**
      * Display hook for view.
@@ -122,7 +122,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
     public function uiView(\Zikula_DisplayHook $hook)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Tag::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaTagModule::', '::', ACCESS_READ)) {
             return;
         }
         // get data from $event
@@ -133,7 +133,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
             return;
         }
         // Load module, otherwise translation is not working in template
-        ModUtil::load('Tag');
+        ModUtil::load('ZikulaTagModule');
         $tags = $this->entityManager->getRepository('Zikula\TagModule\Entity\ObjectEntity')->getTags($module, $areaId, $objectId);
         $this->view->setCacheId('uiview|' . $module . '|' . $areaId . '|' . $objectId);
         $this->view->assign('tags', $tags);
@@ -178,7 +178,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
                 $em->remove($hookObject);
             }
             $em->flush();
-            LogUtil::registerStatus(__('Hooked content in Tags removed.', ZLanguage::getModuleDomain('Tag')));
+            LogUtil::registerStatus(__('Hooked content in Tags removed.', ZLanguage::getModuleDomain('ZikulaTagModule')));
         }
     }
     /**
@@ -200,7 +200,7 @@ class HookHandlers extends \Zikula_Hook_AbstractHandler
                 $em->remove($hookObject);
             }
             $em->flush();
-            LogUtil::registerStatus(__f('Hooked content in Tags removed for area %s.', $areaId, ZLanguage::getModuleDomain('Tag')));
+            LogUtil::registerStatus(__f('Hooked content in Tags removed for area %s.', $areaId, ZLanguage::getModuleDomain('ZikulaTagModule')));
         }
     }
 }

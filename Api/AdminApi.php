@@ -27,21 +27,21 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Define an empty array to hold the list of admin links
         $links = array();
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array(
-                'url' => ModUtil::url('Tag', 'admin', 'modifyconfig'),
+                'url' => ModUtil::url($this->name, 'admin', 'modifyconfig'),
                 'text' => $this->__('Settings'),
                 'class' => 'z-icon-es-config');
         }
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array(
-                'url' => ModUtil::url('Tag', 'admin', 'view'),
+                'url' => ModUtil::url($this->name, 'admin', 'view'),
                 'text' => $this->__('Tag List'),
                 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array(
-                'url' => ModUtil::url('Tag', 'admin', 'edit'),
+                'url' => ModUtil::url($this->name, 'admin', 'edit'),
                 'text' => $this->__('New tag'),
                 'class' => 'z-icon-es-new');
         }

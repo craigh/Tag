@@ -33,7 +33,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function mainAction($args)
     {
-        $this->redirect(ModUtil::url('Tag', 'admin', 'view', $args));
+        $this->redirect(ModUtil::url($this->name, 'admin', 'view', $args));
     }
     /**
      * This method provides a generic item list overview.
@@ -44,7 +44,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function viewAction($args)
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
         // initialize sort array - used to display sort classes and urls
         $sort = array();
         $fields = array('id', 'tag', 'cnt');
@@ -72,7 +72,7 @@ class AdminController extends \Zikula_AbstractController
         }
         // complete initialization of sort array, adding urls
         foreach ($fields as $field) {
-            $sort['url'][$field] = ModUtil::url('Tag', 'admin', 'view', array('orderby' => $field, 'sdir' => $sdir));
+            $sort['url'][$field] = ModUtil::url($this->name, 'admin', 'view', array('orderby' => $field, 'sdir' => $sdir));
         }
         $this->view->assign('sort', $sort);
         $fieldmap = array('tag' => 't.tag', 'id' => 't.id', 'cnt' => 'cnt');
@@ -86,8 +86,8 @@ class AdminController extends \Zikula_AbstractController
      */
     public function editAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
-        $form = FormUtil::newForm('Tag', $this);
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
+        $form = FormUtil::newForm($this->name, $this);
         return $form->execute('admin/edit.tpl', new Edit());
     }
     /**
@@ -95,7 +95,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyconfigAction($args)
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
         return $this->view->fetch('admin/modifyconfig.tpl');
     }
     /**
@@ -105,13 +105,13 @@ class AdminController extends \Zikula_AbstractController
     public function updateconfigAction()
     {
         $this->checkCsrfToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
         $modvars = array('poptagsoneditform' => $this->request->getPost()->get('poptagsoneditform', 10));
         // set the new variables
         $this->setVars($modvars);
         // clear the cache
         $this->view->clear_cache();
         LogUtil::registerStatus($this->__('Done! Updated the Tag configuration.'));
-        return $this->redirect(ModUtil::url('Tag', 'admin', 'view', array()));
+        return $this->redirect(ModUtil::url($this->name, 'admin', 'view', array()));
     }
 }

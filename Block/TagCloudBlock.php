@@ -21,7 +21,7 @@ class TagCloudBlock extends \Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Tag:tagcloud:', 'Block title::');
+        SecurityUtil::registerPermissionSchema($this->name . ':tagcloud:', 'Block title::');
     }
     /**
      * get information on block
@@ -30,7 +30,7 @@ class TagCloudBlock extends \Zikula_Controller_AbstractBlock
     {
         return array(
             'text_type' => 'tagcloud',
-            'module' => 'Tag',
+            'module' => $this->name,
             'text_type_long' => $this->__('Tag cloud display'),
             'allow_multiple' => true,
             'form_content' => false,
@@ -43,10 +43,10 @@ class TagCloudBlock extends \Zikula_Controller_AbstractBlock
      */
     public function display($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Tag:tagcloud:', "{$blockinfo['title']}::", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission($this->name . ':tagcloud:', "{$blockinfo['title']}::", ACCESS_OVERVIEW)) {
             return;
         }
-        if (!ModUtil::available('Tag')) {
+        if (!ModUtil::available($this->name)) {
             return;
         }
         $vars = BlockUtil::varsFromContent($blockinfo['content']);

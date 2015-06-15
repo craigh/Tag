@@ -25,16 +25,16 @@ class SearchApi extends \Zikula_AbstractApi
      */
     public function info()
     {
-        return array('title' => 'Tag', 'functions' => array('tag' => 'search'));
+        return array('title' => $this->name, 'functions' => array('tag' => 'search'));
     }
     /**
      * Search form component
      */
     public function options($args)
     {
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_READ)) {
-            $render = Zikula_View::getInstance('Tag');
-            $render->assign('active', !isset($args['active']) || isset($args['active']['Tag']));
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            $render = Zikula_View::getInstance($this->name);
+            $render->assign('active', !isset($args['active']) || isset($args['active'][$this->name]));
             return $render->fetch('search/options.tpl');
         }
         return '';
@@ -56,7 +56,7 @@ class SearchApi extends \Zikula_AbstractApi
                 'extra' => serialize(array(
                     'tag' => $result->getTag(),
                     'slug' => $result->getSlug())),
-                'module' => 'Tag',
+                'module' => $this->name,
                 'session' => $sessionId);
             if (!DBUtil::insertObject($record, 'search_result')) {
                 return LogUtil::registerError($this->__('Error! Could not save the search results.'));
@@ -74,7 +74,7 @@ class SearchApi extends \Zikula_AbstractApi
     {
         $datarow =& $args['datarow'];
         $extra = unserialize($datarow['extra']);
-        $datarow['url'] = ModUtil::url('Tag', 'user', 'view', array('tag' => $extra['slug']));
+        $datarow['url'] = ModUtil::url($this->name, 'user', 'view', array('tag' => $extra['slug']));
         return true;
     }
 }

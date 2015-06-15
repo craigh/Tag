@@ -113,7 +113,7 @@ class TagModuleInstaller extends \Zikula_AbstractInstaller
         // drop tables
         DoctrineHelper::dropSchema($this->entityManager, array('Zikula\TagModule\Entity\TagEntity', 'Zikula\TagModule\Entity\ObjectEntity'));
         // unregister handlers
-        EventUtil::unregisterPersistentModuleHandlers('Tag');
+//        EventUtil::unregisterPersistentModuleHandlers('Tag');
         HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
         // remove all module vars
         $this->delVars();

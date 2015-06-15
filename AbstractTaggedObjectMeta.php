@@ -129,7 +129,7 @@ abstract class AbstractTaggedObjectMeta implements TaggedObjectMetaInterface
         $title = $this->getTitle();
         $link = null;
         if (!empty($title)) {
-            $dom = ZLanguage::getModuleDomain('Tag');
+            $dom = ZLanguage::getModuleDomain('ZikulaTagModule');
             $by = __('by', $dom);
             $on = __('on', $dom);
             $url = $this->getUrlObject();

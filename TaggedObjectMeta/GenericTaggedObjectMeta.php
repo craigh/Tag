@@ -25,7 +25,7 @@ class GenericTaggedObjectMeta extends AbstractTaggedObjectMeta
     }
     public function setObjectTitle($title)
     {
-        $dom = ZLanguage::getModuleDomain('Tag');
+        $dom = ZLanguage::getModuleDomain('ZikulaTagModule');
         $item = __('item', $dom);
         $this->title = "{$this->getModule()} {$item} (id# {$this->getObjectId()})";
     }

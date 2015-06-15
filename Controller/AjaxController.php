@@ -30,7 +30,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
-        if (SecurityUtil::checkPermission('Tag::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
             $tags = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\TagEntity')->getTagsByFragments(array($fragment));
             $view->assign('tags', $tags);

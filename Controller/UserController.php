@@ -28,7 +28,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function mainAction($args)
     {
-        $this->redirect(ModUtil::url('Tag', 'user', 'view', $args));
+        $this->redirect(ModUtil::url($this->name, 'user', 'view', $args));
     }
     /**
      * This method provides a generic item list overview.
@@ -39,7 +39,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function viewAction($args)
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Tag::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
         $selectedTag = $this->request->getGet()->get('tag', isset($args['tag']) ? $args['tag'] : null);
         if (isset($selectedTag)) {
             $result = $this->entityManager->getRepository('Zikula\\TagModule\\Entity\\ObjectEntity')->getTagged($selectedTag);
