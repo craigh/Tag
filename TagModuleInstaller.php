@@ -103,6 +103,7 @@ class TagModuleInstaller extends \Zikula_AbstractInstaller
             case '1.0.3':
                 $this->delVar('crpTagMigrateComplete');
                 DoctrineHelper::updateSchema($this->entityManager, array('Zikula\TagModule\Entity\ObjectEntity'));
+                // @todo update Permissions rules with new module name
 //            case '2.0.0':
         }
         // Update successful
