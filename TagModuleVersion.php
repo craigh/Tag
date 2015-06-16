@@ -27,6 +27,7 @@ class TagModuleVersion extends \Zikula_AbstractVersion
     {
         $meta = array();
         $meta['displayname'] = $this->__('Tag');
+        $meta['oldnames'] = array("Tag");
         $meta['description'] = $this->__('Tagging module');
         $meta['url'] = $this->__('tag');
         $meta['version'] = '2.0.0';
