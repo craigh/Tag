@@ -31,7 +31,7 @@ class TagModuleVersion extends \Zikula_AbstractVersion
         $meta['url'] = $this->__('tag');
         $meta['version'] = '2.0.0';
         $meta['core_min'] = '1.4.0';
-        $meta['core_max'] = '1.4.99';
+        $meta['core_max'] = '2.9.99';
         $meta['securityschema'] = array($this->name . '::' => '::');
         $meta['capabilities'] = array();
         $meta['capabilities'][HookUtil::PROVIDER_CAPABLE] = array('enabled' => true);

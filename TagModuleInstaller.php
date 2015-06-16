@@ -21,6 +21,11 @@ use Zikula\TagModule\Entity\TagEntity;
  */
 class TagModuleInstaller extends \Zikula_AbstractInstaller
 {
+    private $entities = array(
+        'Zikula\TagModule\Entity\TagEntity',
+        'Zikula\TagModule\Entity\ObjectEntity'
+    );
+
     /**
      * Install the module.
      *
@@ -30,12 +35,12 @@ class TagModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\TagModule\Entity\TagEntity', 'Zikula\TagModule\Entity\ObjectEntity'));
+            DoctrineHelper::createSchema($this->entityManager, $this->entities);
         } catch (\Exception $e) {
             LogUtil::registerError($e->getMessage());
             return false;
         }
-        $this->setVars(array('poptagsoneditform' => 10, 'crpTagMigrateComplete' => false));
+        $this->setVars(array('poptagsoneditform' => 10));
         $this->defaultdata();
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 //        EventUtil::registerPersistentModuleHandler('Tag', 'installer.module.uninstalled', array('Tag_HookHandlers', 'moduleDelete'));
@@ -96,6 +101,9 @@ class TagModuleInstaller extends \Zikula_AbstractInstaller
             case '1.0.2':
 //                EventUtil::registerPersistentModuleHandler('Tag', 'installer.subscriberarea.uninstalled', array('Tag_HookHandlers', 'moduleDeleteByArea'));
             case '1.0.3':
+                $this->delVar('crpTagMigrateComplete');
+                DoctrineHelper::updateSchema($this->entityManager, array('Zikula\TagModule\Entity\ObjectEntity'));
+//            case '2.0.0':
         }
         // Update successful
         return true;
@@ -111,7 +119,7 @@ class TagModuleInstaller extends \Zikula_AbstractInstaller
     public function uninstall()
     {
         // drop tables
-        DoctrineHelper::dropSchema($this->entityManager, array('Zikula\TagModule\Entity\TagEntity', 'Zikula\TagModule\Entity\ObjectEntity'));
+        DoctrineHelper::dropSchema($this->entityManager, $this->entities);
         // unregister handlers
 //        EventUtil::unregisterPersistentModuleHandlers('Tag');
         HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());

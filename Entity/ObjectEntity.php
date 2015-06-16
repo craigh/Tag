@@ -36,7 +36,12 @@ class ObjectEntity extends \Zikula_EntityAccess
     /**
      * tags
      *
-     * @ORM\ManyToMany(targetEntity="Zikula\TagModule\Entity\TagEntity")
+     * @ORM\ManyToMany(targetEntity="TagEntity")
+     * @ORM\JoinTable(name="tag_entity_object_tag_entity_tag",
+     *      joinColumns={@ORM\JoinColumn(name="tag_entity_tag_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_entity_object_id", referencedColumnName="id")}
+     *      )
+     * table/column names maintains BC with v1
      */
     private $tags = null;
     /**
@@ -57,15 +62,7 @@ class ObjectEntity extends \Zikula_EntityAccess
      * @ORM\Column(type="integer")
      */
     private $objectId;
-    /**
-     * url field (object url)
-     * @var string
-     * @deprecated since Tag version 1.0.2
-     *     use $urlObject
-     * 
-     * @ORM\Column(nullable=true)
-     */
-    private $url = null;
+
     /**
      * url object
      * @var ModUrl
@@ -80,7 +77,6 @@ class ObjectEntity extends \Zikula_EntityAccess
         $this->setObjectId($objectId);
         $this->setAreaId($areaId);
         $this->setUrlObject($urlObject);
-        $this->setUrl($urlObject->getUrl(null, null, false, false));
     }
     /**
      * get the record ID
@@ -154,22 +150,7 @@ class ObjectEntity extends \Zikula_EntityAccess
     {
         $this->objectId = $objectId;
     }
-    /**
-     * @deprecated since Tag version 1.0.2
-     * @return string 
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-    /**
-     * @deprecated since Tag version 1.0.2
-     * @param string $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
+
     /**
      * get the hooked object UrlObject
      * @return ModUrl

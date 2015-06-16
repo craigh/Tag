@@ -14,9 +14,7 @@ Tag provides special link decoding for use in shorturls.
 
 Tag provides a TagCloud block and ContentType plugin
 
-Tag can migrate/import crpTag data.
-
-Version 1.1.0
+Version 2.0.0
 -------------
 **__Requires Zikula Core 1.4.0+__**
 
