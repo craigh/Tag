@@ -1,4 +1,4 @@
-{ajaxheader modname= filename='tag.js' ui=true}
+{ajaxheader modname='ZikulaTagModule' filename='tag.js' ui=true}
 {*{pageaddvar name='stylesheet' value='modules/Tag/style/style.css'}*}
 {pageaddvarblock}
 <script type="text/javascript">
