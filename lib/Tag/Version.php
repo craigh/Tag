@@ -1,7 +1,7 @@
 <?php
 /**
  * Tag - a content-tagging module for the Zikukla Application Framework
- * 
+ *
  * @license MIT
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -25,9 +25,9 @@ class Tag_Version extends Zikula_AbstractVersion
         $meta['displayname'] = $this->__('Tag');
         $meta['description'] = $this->__("Tagging module");
         $meta['url'] = $this->__('tag');
-        $meta['version'] = '1.0.3';
+        $meta['version'] = '1.0.4';
         $meta['core_min'] = '1.3.3'; // requires minimum 1.3.3 or later
-        $meta['core_max'] = '1.3.99'; // doesn't work with later branches
+        $meta['core_max'] = '1.4.99';
         $meta['securityschema'] = array('Tag::' => '::');
         $meta['capabilities'] = array();
         $meta['capabilities'][HookUtil::PROVIDER_CAPABLE] = array('enabled' => true);
